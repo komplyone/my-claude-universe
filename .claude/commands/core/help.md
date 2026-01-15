@@ -23,58 +23,60 @@ Show command reference and help.
 ```
 ## Command Reference
 
+Commands can be invoked with `/command` or `--command` syntax.
+
 ### Core Commands (Daily Use)
 
 | Command | Description |
 |---------|-------------|
-| `/load-status` | Load current state, continue from where you left off |
-| `/focus [project] [component]` | Switch project/component focus |
-| `/save` | Save session progress |
-| `/handoff [tool]` | Prepare for tool transition |
-| `/plan` | Enter plan mode (no changes) |
-| `/act` | Enter act mode (make changes) |
-| `/ask` | Enter ask mode (read-only) |
+| `/load-status` or `--load-status` | Load current state, continue from where you left off |
+| `/focus` or `--focus` | Switch project/component focus |
+| `/save` or `--save` | Save session progress |
+| `/handoff` or `--handoff` | Prepare for tool transition |
+| `/plan` or `--plan` | Enter plan mode (no changes) |
+| `/act` or `--act` | Enter act mode (make changes) |
+| `/ask` or `--ask` | Enter ask mode (read-only) |
 
 ### Project Commands
 
 | Command | Description |
 |---------|-------------|
-| `/new-project` | Create a new project |
-| `/import-project [path]` | Import existing project by scanning folder/repo |
-| `/deprecate-project [id]` | Mark project as deprecated |
-| `/delete-project [id]` | Remove project from MCU |
+| `/new-project` or `--new-project` | Create a new project |
+| `/import-project` or `--import-project` | Import existing project by scanning folder/repo |
+| `/deprecate-project` or `--deprecate-project` | Mark project as deprecated |
+| `/delete-project` or `--delete-project` | Remove project from MCU |
 
 ### Context Commands
 
 | Command | Description |
 |---------|-------------|
-| `/update-universe` | Modify universal context files |
-| `/update-project` | Modify current project context |
+| `/update-universe` or `--update-universe` | Modify universal context files |
+| `/update-project` or `--update-project` | Modify current project context |
 
 ### Feature & Review Commands
 
 | Command | Description |
 |---------|-------------|
-| `/plan-feature` | Guided feature planning |
-| `/review security` | Security-focused review |
-| `/review performance` | Performance review |
-| `/review code` | Code quality review |
+| `/plan-feature` or `--plan-feature` | Guided feature planning |
+| `/review security` or `--review security` | Security-focused review |
+| `/review performance` or `--review performance` | Performance review |
+| `/review code` or `--review code` | Code quality review |
 
 ### Utility Commands
 
 | Command | Description |
 |---------|-------------|
-| `/cleanup` | Clean stale state |
-| `/decisions` | View decision log |
-| `/todos` | View/manage tasks |
-| `/sync-check` | Validate consistency |
+| `/cleanup` or `--cleanup` | Clean stale state |
+| `/decisions` or `--decisions` | View decision log |
+| `/todos` or `--todos` | View/manage tasks |
+| `/sync-check` or `--sync-check` | Validate consistency |
 
 ### MCU System Commands
 
 | Command | Description |
 |---------|-------------|
-| `/update-mcu` | Update, commit, and push changes to public MCU repo |
-| `/version` | Display the current MCU version |
+| `/update-mcu` or `--update-mcu` | Update, commit, and push changes to public MCU repo |
+| `/version` or `--version` | Display the current MCU version |
 
 ---
 
@@ -86,10 +88,9 @@ Errors are displayed as: `Guru Meditation: [error description]`
 
 ### Quick Tips
 
-- Most commands have aliases: `/status`, `--status`, or "continue"
-- Use `/plan` before designing, `/act` before implementing
-- Save progress with `/save` before ending sessions
-- Tab-complete works in Claude Code
+- All commands work with both `/` and `--` prefix
+- Use `/plan` or `--plan` before designing, `/act` or `--act` before implementing
+- Save progress with `/save` or `--save` before ending sessions
 
 ### Current State
 - **Focus**: [current project/component or "none"]

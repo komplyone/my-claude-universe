@@ -1,0 +1,36 @@
+# General Project Configuration
+# Template for non-software projects (planning, research, documentation, etc.)
+
+id: template-general
+name: Template General Project
+tagline: A general project for planning, research, or documentation
+category: general
+purpose: planning  # planning | research | documentation | event | personal | other
+status: active     # active | on-hold | completed | archived
+priority: primary  # primary | secondary | background
+
+# General project metadata
+created: "[DATE]"
+owner: "[YOUR_NAME]"
+
+# Optional: key dates or milestones
+milestones:
+  # - name: "Project kickoff"
+  #   date: "2024-01-15"
+  #   status: completed
+  # - name: "First deliverable"
+  #   date: "2024-02-01"
+  #   status: planned
+
+# Optional: tags for organization
+tags: []
+  # - research
+  # - internal
+  # - client-name
+
+# Notes
+# - General projects don't have components, infrastructure, or tech stack
+# - Use context.md for project background and notes
+# - Use resources/ folder for reference materials
+# - Use state/tasks.md for todo items
+# - Use state/decisions.md for decision log

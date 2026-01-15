@@ -74,7 +74,7 @@ git clone https://github.com/komplyone/my-claude-universe.git
 cd my-claude-universe
 
 # 2. Initialize your universe (with Claude Code)
-claude
+claude # Or open Claude Desktop > Code > choose Local and navigate to the folder
 
 # 3. Tell Claude to initialize
 # Type: "Read NEW_PROJECT.md and help me set up my universe"
