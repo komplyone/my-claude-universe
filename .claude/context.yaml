@@ -1,0 +1,90 @@
+# Context Loading Configuration
+# Defines when to automatically load additional context files
+
+# Token budgets
+budgets:
+  bootstrap: 2000      # STATUS.md only
+  project_switch: 5000 # Add project context
+  deep_work: 15000     # Add component specs
+  maximum: 50000       # Hard limit
+  cleanup_threshold: 30000  # Suggest cleanup above this
+
+# Keyword-triggered loading
+# When these words appear in user messages, load the associated files
+keywords:
+  # Security-related triggers
+  "security|auth|authentication|password|jwt|token|vulnerability":
+    - universe/security.md
+
+  # Infrastructure triggers
+  "infrastructure|deploy|hosting|server|database|cache|cdn":
+    - universe/infrastructure.md
+
+  # Brand/identity triggers
+  "brand|marketing|voice|tone|identity|messaging":
+    - universe/identity.md
+
+  # Budget/cost triggers
+  "budget|cost|pricing|billing|expense":
+    - universe/infrastructure.md  # Contains cost guidelines
+
+  # Decision triggers
+  "decision|decide|choice|alternative|option":
+    - state/decisions.md
+
+# Action-triggered loading
+# When Claude is about to perform these actions, load associated files
+actions:
+  code_generation:
+    - universe/security.md
+
+  code_review:
+    - universe/security.md
+
+  deployment:
+    - universe/infrastructure.md
+    - universe/security.md
+
+  feature_planning:
+    - "{project}/context.md"
+    - "{project}/components/{component}.md"
+
+  api_design:
+    - universe/security.md
+    - "{project}/context.md"
+
+  database_work:
+    - universe/infrastructure.md
+    - universe/security.md
+
+# Project focus loading
+# When focusing on a project, load these files
+project_focus:
+  always:
+    - "projects/{project}/project.yaml"
+    - "projects/{project}/context.md"
+
+  with_component:
+    - "projects/{project}/components/{component}.md"
+
+  optional:
+    - "projects/{project}/state/tasks.md"
+    - "projects/{project}/state/decisions.md"
+
+# Cleanup rules
+cleanup:
+  # Files that can be unloaded when switching context
+  unloadable:
+    - "projects/*/components/*.md"
+    - "projects/*/state/*.md"
+
+  # Files that should persist
+  sticky:
+    - "STATUS.md"
+    - "universe/principles.md"
+
+  # Suggest cleanup when these patterns are detected
+  suggest_when:
+    - "multiple projects loaded"
+    - "context above threshold"
+    - "switching to unrelated work"

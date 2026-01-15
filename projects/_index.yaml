@@ -1,0 +1,39 @@
+# Project Index
+# Master registry of all projects in this universe
+
+version: "1.0"
+
+# Quick reference for all projects
+# Details in each project's project.yaml
+
+projects: []
+  # Example entry (uncomment and modify when creating first project):
+  #
+  # - id: my-project
+  #   name: My Project
+  #   tagline: What it does in one line
+  #   status: development  # concept | planned | development | beta | production | maintenance
+  #   priority: primary    # primary | secondary | normal | low
+  #   tech:
+  #     - go
+  #     - react
+  #     - postgresql
+  #   context: projects/my-project/context.md
+
+# Status definitions
+statuses:
+  concept: "Initial idea, not yet planned"
+  planned: "Planned but not started"
+  development: "Actively being built"
+  beta: "Testing with limited users"
+  production: "Live and in use"
+  maintenance: "Stable, minimal changes"
+  deprecated: "Being phased out"
+  archived: "No longer active"
+
+# Priority definitions
+priorities:
+  primary: "Main focus, most resources"
+  secondary: "Important but not primary"
+  normal: "Standard priority"
+  low: "When time permits"

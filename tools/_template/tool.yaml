@@ -1,0 +1,48 @@
+# Tool Configuration Template
+# Copy this directory to add support for a new tool
+
+id: tool-id
+name: Tool Name
+type: ai-ide  # ai-assistant | ai-ide | editor | terminal
+status: planned  # native | supported | planned | experimental
+
+description: |
+  Brief description of the tool and what it does.
+
+# What the tool can do
+capabilities:
+  - file_access      # Can read/write files
+  - command_execution # Can run terminal commands
+  - git_operations   # Can do git operations
+  - inline_editing   # Can edit inline in files
+  - chat             # Has conversational interface
+  - conversation     # Maintains conversation context
+
+# URLs and documentation
+links:
+  website: https://
+  documentation: https://
+  download: https://
+
+# Setup requirements
+requirements:
+  - "Requirement 1"
+  - "Requirement 2"
+
+# How to configure for use with this universe
+setup:
+  steps:
+    - "Step 1"
+    - "Step 2"
+
+# Known limitations
+limitations:
+  - "Limitation 1"
+  - "Limitation 2"
+
+# Notes for handoff to/from this tool
+handoff:
+  to_notes: |
+    Notes when handing off TO this tool.
+  from_notes: |
+    Notes when receiving handoff FROM this tool.

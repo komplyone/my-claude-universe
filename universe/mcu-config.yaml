@@ -1,0 +1,103 @@
+# MCU (My Claude Universe) System Configuration
+# Configure how MCU syncs with the public repository
+
+# Public repository settings
+mcu:
+  # Your fork/clone of the public MCU repository
+  public_repo:
+    url: ""  # e.g., "https://github.com/YOUR_USERNAME/my-claude-universe"
+    local_path: ""  # Optional: local clone path if different from this repo
+    branch: "main"
+
+  # Set to true once you've configured the public repo
+  configured: false
+
+# What to sync TO the public repo when using /update-mcu
+# These are MCU system files that benefit the community
+sync:
+  # Include these patterns (relative to MCU root)
+  include:
+    # Command system
+    - ".claude/commands/**/*.md"
+    - ".claude/commands/**/*.yaml"
+    - ".claude/bootstrap.md"
+    - ".claude/context.yaml"
+    - ".claude/project-instructions.md"
+
+    # Universe templates (not your customized versions)
+    - "universe/defaults.yaml"
+    - "universe/consistency.md"
+    - "universe/mcu-config.yaml"
+
+    # Project templates
+    - "projects/_index.yaml"
+    - "projects/_template/**/*"
+
+    # State templates (empty templates only)
+    - "state/focus.yaml"
+    - "state/todos.md"
+    - "state/decisions.md"
+    - "state/session.md"
+    - "state/waiting.md"
+    - "state/handoff.md"
+
+    # Tool templates
+    - "tools/_index.yaml"
+    - "tools/_template/**/*"
+
+    # Documentation
+    - "docs/**/*"
+    - "examples/**/*"
+
+    # CI/CD and Docker
+    - ".github/**/*"
+    - "docker/**/*"
+
+    # Root files
+    - "README.md"
+    - "NEW_PROJECT.md"
+    - "STATUS.md"
+    - "CONTRIBUTING.md"
+    - "LICENSE"
+    - ".gitignore"
+
+  # NEVER sync these (your private data)
+  exclude:
+    # Your actual projects
+    - "projects/*"
+    - "!projects/_index.yaml"
+    - "!projects/_template/**"
+
+    # Your customized universe files
+    - "universe/identity.md"
+    - "universe/principles.md"
+    - "universe/security.md"
+    - "universe/infrastructure.md"
+
+    # Secrets and environment
+    - ".env*"
+    - "*.pem"
+    - "*.key"
+    - "secrets/**"
+
+    # Your session state
+    - "state/focus.yaml"  # Template is ok, actual state is not
+
+    # Editor and OS files
+    - ".idea/**"
+    - ".vscode/**"
+    - ".DS_Store"
+    - "*.swp"
+
+# Contribution settings
+contribution:
+  # Auto-generate commit messages based on changes
+  auto_message: true
+
+  # Prefix for auto-generated messages
+  message_prefix: ""  # e.g., "[MCU]"
+
+  # Sign commits with Co-Authored-By
+  co_author: true
+  co_author_name: "Claude"
+  co_author_email: "noreply@anthropic.com"

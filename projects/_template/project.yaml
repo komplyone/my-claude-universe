@@ -1,0 +1,96 @@
+# Project Configuration Template
+# Copy this directory to create a new project: projects/[project-id]/
+
+# === IDENTITY ===
+id: project-id           # Lowercase, hyphens ok, must match directory name
+name: Project Name       # Human-readable name
+tagline: What it does    # One-line description
+status: concept          # concept | planned | development | beta | production | maintenance
+priority: normal         # primary | secondary | normal | low
+
+# === DESCRIPTION ===
+description: |
+  Longer description of what this project is and does.
+  Can be multiple lines.
+
+problem: |
+  What problem does this solve?
+  Who has this problem?
+
+# === COMPONENTS ===
+components:
+  - id: api
+    name: API Backend
+    status: planned       # planned | active | maintenance | deprecated
+    repo: ""              # GitHub URL when created
+    tech:
+      - go
+      - postgresql
+    platforms: []
+
+  # Add more components as needed:
+  # - id: web
+  #   name: Web Frontend
+  #   status: planned
+  #   repo: ""
+  #   tech:
+  #     - react
+  #     - typescript
+  #   platforms:
+  #     - browser
+
+  # - id: mobile
+  #   name: Mobile App
+  #   status: planned
+  #   repo: ""
+  #   tech:
+  #     - flutter
+  #   platforms:
+  #     - ios
+  #     - android
+
+# === BUDGET ===
+budget:
+  category: personal      # hobby | personal | startup | business
+  monthly_limit: 50       # USD
+  cost_priority: aggressive  # aggressive | moderate | relaxed
+  preferences:
+    - "Prefer free tiers"
+    - "Minimize recurring costs"
+
+# === INFRASTRUCTURE ===
+infrastructure:
+  compute: hetzner        # hetzner | aws | gcp | cloudflare | other
+  database: neon          # neon | supabase | planetscale | self-hosted
+  cache: redis-cloud      # redis-cloud | upstash | none
+  storage: cloudflare-r2  # cloudflare-r2 | s3 | gcs | none
+  cdn: cloudflare         # cloudflare | aws-cloudfront | none
+  region: eu-central      # Primary region
+
+# === SECURITY ===
+security:
+  profile: standard       # standard | high | critical
+  requirements:
+    - "Standard authentication"
+    - "Input validation"
+    - "HTTPS only"
+
+# === MILESTONES ===
+milestones:
+  - name: MVP
+    target_date: ""       # YYYY-MM-DD when known
+    status: planned       # planned | in_progress | completed | missed
+    criteria:
+      - "Core feature 1"
+      - "Core feature 2"
+
+  # - name: Beta Launch
+  #   target_date: ""
+  #   status: planned
+  #   criteria:
+  #     - "All MVP features"
+  #     - "User feedback collected"
+
+# === METADATA ===
+created: ""              # YYYY-MM-DD
+updated: ""              # YYYY-MM-DD

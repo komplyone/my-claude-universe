@@ -1,0 +1,460 @@
+# Command Registry
+# All available commands in My Claude Universe (MCU)
+#
+# MCU = My Claude Universe - the complete system for AI-human collaboration
+
+registry_version: "1.0"
+mcu_version: "v1"
+
+# Mode definitions
+modes:
+  plan:
+    description: "Research and design mode - no file changes"
+    file_changes: false
+
+  act:
+    description: "Implementation mode - can modify files"
+    file_changes: true
+
+  ask:
+    description: "Read-only exploration mode"
+    file_changes: false
+
+# Command categories
+categories:
+  core:
+    description: "Essential commands for daily use"
+    commands:
+      - load-status
+      - focus
+      - save
+      - handoff
+      - plan
+      - act
+      - ask
+      - help
+      - cleanup
+      - decisions
+      - todos
+      - sync-check
+      - from
+      - version
+
+  context:
+    description: "Context management commands"
+    commands:
+      - update-universe
+      - update-project
+
+  projects:
+    description: "Project lifecycle commands"
+    commands:
+      - new-project
+      - import-project
+      - deprecate-project
+      - delete-project
+
+  mcu:
+    description: "MCU system management commands"
+    commands:
+      - update-mcu
+
+  features:
+    description: "Feature development commands"
+    commands:
+      - plan-feature
+
+  reviews:
+    description: "Code review commands"
+    commands:
+      - code-quality
+      - performance
+      - security
+
+# Command definitions
+commands:
+  # === CORE COMMANDS ===
+
+  load-status:
+    name: "Load Status"
+    file: "core/load-status.md"
+    description: "Load current state and continue from where you left off"
+    aliases:
+      - "--load-status"
+      - "/status"
+      - "--status"
+      - "continue"
+      - "what's happening"
+      - "where were we"
+    arguments: []
+    mode_required: null
+
+  focus:
+    name: "Focus"
+    file: "core/focus.md"
+    description: "Change project and/or component focus"
+    aliases:
+      - "--focus"
+      - "switch to"
+      - "work on"
+    arguments:
+      - name: "project"
+        type: "string"
+        required: false
+        description: "Project ID to focus on"
+      - name: "component"
+        type: "string"
+        required: false
+        description: "Component within the project"
+    mode_required: null
+
+  save:
+    name: "Save"
+    file: "core/save.md"
+    description: "Save current session state for continuity"
+    aliases:
+      - "--save"
+      - "save progress"
+      - "save state"
+    arguments: []
+    mode_required: null
+
+  handoff:
+    name: "Handoff"
+    file: "core/handoff.md"
+    description: "Prepare context for transitioning to another tool"
+    aliases:
+      - "--handoff"
+      - "prepare for"
+      - "switch to tool"
+    arguments:
+      - name: "tool"
+        type: "string"
+        required: false
+        description: "Target tool (cursor, vscode, etc.)"
+    mode_required: null
+
+  plan:
+    name: "Plan Mode"
+    file: "core/plan.md"
+    description: "Enter plan mode - research and design without changes"
+    aliases:
+      - "--plan"
+      - "plan mode"
+      - "design mode"
+    arguments: []
+    mode_required: null
+    sets_mode: "plan"
+
+  act:
+    name: "Act Mode"
+    file: "core/act.md"
+    description: "Enter act mode - implement and make changes"
+    aliases:
+      - "--act"
+      - "act mode"
+      - "implement"
+    arguments: []
+    mode_required: null
+    sets_mode: "act"
+
+  ask:
+    name: "Ask Mode"
+    file: "core/ask.md"
+    description: "Enter ask mode - read-only exploration"
+    aliases:
+      - "--ask"
+      - "ask mode"
+      - "explore"
+    arguments: []
+    mode_required: null
+    sets_mode: "ask"
+
+  help:
+    name: "Help"
+    file: "core/help.md"
+    description: "Show command reference and help"
+    aliases:
+      - "--help"
+      - "show commands"
+      - "what can you do"
+    arguments: []
+    mode_required: null
+
+  cleanup:
+    name: "Cleanup"
+    file: "core/cleanup.md"
+    description: "Clean up stale state and optimize context"
+    aliases:
+      - "--cleanup"
+      - "clean up"
+    arguments: []
+    mode_required: null
+
+  decisions:
+    name: "Decisions"
+    file: "core/decisions.md"
+    description: "View and manage the decision log"
+    aliases:
+      - "--decisions"
+      - "show decisions"
+      - "decision log"
+    arguments:
+      - name: "action"
+        type: "enum"
+        values: ["list", "add", "search"]
+        required: false
+        default: "list"
+    mode_required: null
+
+  todos:
+    name: "Todos"
+    file: "core/todos.md"
+    description: "View and manage tasks"
+    aliases:
+      - "--todos"
+      - "show todos"
+      - "tasks"
+    arguments:
+      - name: "filter"
+        type: "string"
+        required: false
+        description: "Filter by project, assignee, or status"
+    mode_required: null
+
+  sync-check:
+    name: "Sync Check"
+    file: "core/sync-check.md"
+    description: "Validate consistency across universe files"
+    aliases:
+      - "--sync-check"
+      - "check consistency"
+    arguments: []
+    mode_required: null
+
+  from:
+    name: "From"
+    file: "core/from.md"
+    description: "Specify session context source"
+    aliases:
+      - "--from"
+    arguments:
+      - name: "source"
+        type: "string"
+        required: true
+        description: "Source tool or context"
+    mode_required: null
+
+  version:
+    name: "Version"
+    file: "core/version.md"
+    description: "Display the current MCU version"
+    aliases:
+      - "--version"
+      - "what version"
+      - "mcu version"
+    arguments: []
+    mode_required: null
+
+  # === CONTEXT COMMANDS ===
+
+  update-universe:
+    name: "Update Universe"
+    file: "context/update-universe.md"
+    description: "Modify universal context files"
+    aliases:
+      - "--update-universe"
+    arguments:
+      - name: "file"
+        type: "string"
+        required: false
+        description: "Specific file to update"
+    mode_required: "act"
+
+  update-project:
+    name: "Update Project"
+    file: "context/update-project.md"
+    description: "Modify current project context"
+    aliases:
+      - "--update-project"
+    arguments:
+      - name: "file"
+        type: "string"
+        required: false
+        description: "Specific file to update"
+    mode_required: "act"
+
+  # === PROJECT COMMANDS ===
+
+  new-project:
+    name: "New Project"
+    file: "projects/new-project.md"
+    description: "Create a new project with guided setup"
+    aliases:
+      - "--new-project"
+      - "create project"
+      - "start project"
+    arguments:
+      - name: "name"
+        type: "string"
+        required: false
+        description: "Project name (will prompt if not provided)"
+    mode_required: null
+
+  import-project:
+    name: "Import Project"
+    file: "projects/import-project.md"
+    description: "Import an existing project by scanning a local folder or GitHub repo"
+    aliases:
+      - "--import-project"
+      - "import project"
+      - "add existing project"
+      - "scan project"
+    arguments:
+      - name: "path"
+        type: "string"
+        required: false
+        description: "Local path or GitHub URL to scan"
+    mode_required: null
+
+  deprecate-project:
+    name: "Deprecate Project"
+    file: "projects/deprecate-project.md"
+    description: "Mark a project as deprecated"
+    aliases:
+      - "--deprecate-project"
+    arguments:
+      - name: "project"
+        type: "string"
+        required: true
+        description: "Project ID to deprecate"
+    mode_required: "act"
+
+  delete-project:
+    name: "Delete Project"
+    file: "projects/delete-project.md"
+    description: "Remove a project from the universe"
+    aliases:
+      - "--delete-project"
+      - "remove project"
+    arguments:
+      - name: "project"
+        type: "string"
+        required: true
+        description: "Project ID to delete"
+    mode_required: "act"
+
+  # === FEATURE COMMANDS ===
+
+  plan-feature:
+    name: "Plan Feature"
+    file: "features/plan-feature.md"
+    description: "Guided feature planning workflow"
+    aliases:
+      - "--plan-feature"
+      - "design feature"
+      - "new feature"
+    arguments:
+      - name: "name"
+        type: "string"
+        required: false
+        description: "Feature name (will prompt if not provided)"
+    mode_required: null
+    sets_mode: "plan"
+
+  # === REVIEW COMMANDS ===
+
+  code-quality:
+    name: "Code Quality Review"
+    file: "reviews/code-quality.md"
+    description: "Review code for quality and best practices"
+    aliases:
+      - "--review code"
+      - "review quality"
+      - "code review"
+    arguments:
+      - name: "target"
+        type: "string"
+        required: false
+        description: "File or directory to review"
+    mode_required: null
+
+  performance:
+    name: "Performance Review"
+    file: "reviews/performance.md"
+    description: "Review code for performance issues"
+    aliases:
+      - "--review performance"
+      - "perf review"
+    arguments:
+      - name: "target"
+        type: "string"
+        required: false
+        description: "File or directory to review"
+    mode_required: null
+
+  security:
+    name: "Security Review"
+    file: "reviews/security.md"
+    description: "Review code for security vulnerabilities"
+    aliases:
+      - "--review security"
+      - "security audit"
+    arguments:
+      - name: "target"
+        type: "string"
+        required: false
+        description: "File or directory to review"
+    mode_required: null
+
+  # === MCU COMMANDS ===
+
+  update-mcu:
+    name: "Update MCU"
+    file: "mcu/update-mcu.md"
+    description: "Update, commit, and push changes to the public MCU repository"
+    aliases:
+      - "--update-mcu"
+      - "update mcu"
+      - "sync mcu"
+      - "push mcu changes"
+    arguments:
+      - name: "message"
+        type: "string"
+        required: false
+        description: "Commit message for the changes"
+    mode_required: "act"
+
+# Natural language triggers
+# Maps natural phrases to commands
+natural_language:
+  "where were we": "status"
+  "what's the status": "status"
+  "continue": "status"
+  "let's continue": "status"
+  "switch to *": "focus"
+  "work on *": "focus"
+  "save my progress": "save"
+  "save and quit": "save"
+  "i'm done": "save"
+  "goodbye": "save"
+  "create a project": "new-project"
+  "start a new project": "new-project"
+  "add a feature": "plan-feature"
+  "design a feature": "plan-feature"
+  "review the code": "code-quality"
+  "check security": "security"
+  "what commands": "help"
+  "show help": "help"
+  "import *": "import-project"
+  "scan *": "import-project"
+  "add existing *": "import-project"
+  "update mcu": "update-mcu"
+  "sync mcu": "update-mcu"
+  "push mcu": "update-mcu"
+  "what version": "version"
+  "mcu version": "version"
+
+# Error handling
+# All errors should use the format: "Guru Meditation: [error description]"
+# See .claude/commands/core/error-handling.md for guidelines

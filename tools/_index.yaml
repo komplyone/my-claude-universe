@@ -1,0 +1,77 @@
+# Tools Registry
+# Third-party tools that can be used with this universe
+
+version: "1.0"
+
+# Registered tools
+tools:
+  - id: claude-code
+    name: Claude Code
+    type: ai-assistant
+    status: native
+    description: Native Claude Code CLI
+    capabilities:
+      - file_access
+      - command_execution
+      - git_operations
+    config: null  # No special config needed
+
+  - id: claude-chat
+    name: Claude Chat
+    type: ai-assistant
+    status: supported
+    description: Claude via claude.ai web interface
+    capabilities:
+      - conversation
+    config: tools/claude-chat/
+    notes: "Requires copy/paste for file content"
+
+  - id: cursor
+    name: Cursor
+    type: ai-ide
+    status: planned
+    description: AI-powered code editor
+    capabilities:
+      - file_access
+      - inline_editing
+      - chat
+    config: tools/cursor/
+
+  - id: windsurf
+    name: Windsurf
+    type: ai-ide
+    status: planned
+    description: AI code editor by Codeium
+    capabilities:
+      - file_access
+      - inline_editing
+      - chat
+    config: tools/windsurf/
+
+  - id: vscode
+    name: VS Code
+    type: editor
+    status: supported
+    description: Visual Studio Code
+    capabilities:
+      - file_access
+      - extensions
+    config: null
+
+# Tool categories
+categories:
+  ai-assistant:
+    description: "AI assistants for conversation and coding"
+  ai-ide:
+    description: "IDEs with AI integration"
+  editor:
+    description: "Code editors without AI"
+  terminal:
+    description: "Command-line interfaces"
+
+# Status definitions
+statuses:
+  native: "Built-in support, no configuration needed"
+  supported: "Works well with some setup"
+  planned: "Support coming soon"
+  experimental: "May work, not fully tested"

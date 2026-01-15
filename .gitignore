@@ -1,0 +1,63 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# MCU State Files (contain session-specific data, may leak sensitive info)
+# These should NOT be committed to public repositories
+state/handoff.md
+state/session.md
+state/focus.yaml
+
+# IDE and editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies (when you have actual projects)
+node_modules/
+vendor/
+.go/
+
+# Build outputs
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test and coverage
+coverage/
+*.cover
+*.out
+.pytest_cache/
+__pycache__/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Deleted project backups
+.deleted/
+
+# Local development databases
+*.db
+*.sqlite
+
+# Docker
+.docker/
+
+# OS files
+Thumbs.db

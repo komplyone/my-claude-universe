@@ -1,0 +1,65 @@
+# Universe Defaults
+# Default values for new projects. Override in project.yaml as needed.
+
+# Project defaults
+project:
+  status: concept  # concept | planned | development | beta | production | maintenance
+  priority: normal  # primary | secondary | normal | low
+
+# Budget defaults
+budget:
+  category: personal  # hobby | personal | startup | business
+  cost_priority: aggressive  # aggressive | moderate | relaxed
+
+# Infrastructure defaults
+infrastructure:
+  compute: hetzner
+  database: neon
+  cache: redis-cloud
+  storage: cloudflare-r2
+  cdn: cloudflare
+  region: eu-central
+
+# Security defaults
+security:
+  profile: standard  # standard | high | critical
+  auth_required: true
+  rate_limiting: true
+
+# Technology defaults (by project type)
+tech_defaults:
+  api:
+    language: go
+    framework: chi
+    database: postgresql
+
+  web:
+    language: typescript
+    framework: react
+    bundler: vite
+    styling: tailwind
+
+  mobile:
+    framework: flutter
+    platforms: [ios, android]
+
+  desktop:
+    framework: tauri
+    platforms: [macos, windows, linux]
+
+  cli:
+    language: go
+
+# Component defaults
+component:
+  status: planned  # planned | active | maintenance | deprecated
+
+# State defaults
+state:
+  mode: ask  # plan | act | ask
+
+# Session defaults
+session:
+  auto_save: true
+  context_budget: 15000  # tokens
+  cleanup_threshold: 30000  # tokens
