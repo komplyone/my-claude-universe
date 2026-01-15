@@ -10,17 +10,17 @@ A production-ready system for AI-human collaboration across multiple projects. *
     ╔═══════════════════════════════════════════════════════════════╗
     ║                     MY CLAUDE UNIVERSE                        ║
     ║                                                               ║
-    ║   ┌─────────────────────────────────────────────────────┐    ║
-    ║   │                   STATUS.md                          │    ║
-    ║   │              (Session Bootstrap)                     │    ║
-    ║   └──────────────────────┬──────────────────────────────┘    ║
+    ║   ┌─────────────────────────────────────────────────────┐     ║
+    ║   │                   STATUS.md                         │     ║
+    ║   │              (Session Bootstrap)                    │     ║
+    ║   └──────────────────────┬──────────────────────────────┘     ║
     ║                          │                                    ║
-    ║          ┌───────────────┼───────────────┐                   ║
-    ║          ▼               ▼               ▼                   ║
-    ║   ┌──────────┐    ┌──────────┐    ┌──────────┐              ║
-    ║   │ universe │    │ projects │    │  state   │              ║
-    ║   │ (shared) │    │ (yours)  │    │(runtime) │              ║
-    ║   └──────────┘    └──────────┘    └──────────┘              ║
+    ║          ┌───────────────┼───────────────┐                    ║
+    ║          ▼               ▼               ▼                    ║
+    ║   ┌──────────┐    ┌──────────┐    ┌──────────┐                ║
+    ║   │ universe │    │ projects │    │  state   │                ║
+    ║   │ (shared) │    │ (yours)  │    │(runtime) │                ║
+    ║   └──────────┘    └──────────┘    └──────────┘                ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
 ```
@@ -109,22 +109,22 @@ git remote add origin YOUR_REPO_URL
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     SESSION START                            │
+│                     SESSION START                           │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
+│                                                             │
 │  1. Claude reads STATUS.md (~800 words, ~2000 tokens)       │
 │     └─> Current focus, recent work, next steps              │
-│                                                              │
+│                                                             │
 │  2. Based on your request, Claude loads relevant context:   │
 │     ├─> Project context (5000 tokens)                       │
 │     ├─> Component specs (variable)                          │
 │     └─> Security/infra guidelines (as needed)               │
-│                                                              │
+│                                                             │
 │  3. Work happens with full context                          │
-│                                                              │
+│                                                             │
 │  4. Before ending, STATUS.md is updated                     │
 │     └─> Next session picks up exactly where you left off    │
-│                                                              │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -145,21 +145,21 @@ One of MCU's most powerful features is its **lazy-loading context system**. Inst
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                 THE CONTEXT WINDOW PROBLEM                       │
+│                 THE CONTEXT WINDOW PROBLEM                      │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  Traditional approach:                                           │
+│                                                                 │
+│  Traditional approach:                                          │
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │ Load EVERYTHING at start → Context fills up quickly →      │ │
 │  │ Less room for actual work → More expensive → Slower        │ │
 │  └────────────────────────────────────────────────────────────┘ │
-│                                                                  │
-│  MCU's lazy-loading approach:                                    │
+│                                                                 │
+│  MCU's lazy-loading approach:                                   │
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │ Load minimal bootstrap → Detect what's needed →            │ │
 │  │ Load on demand → More room for work → Efficient            │ │
 │  └────────────────────────────────────────────────────────────┘ │
-│                                                                  │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,13 +167,13 @@ One of MCU's most powerful features is its **lazy-loading context system**. Inst
 
 MCU defines explicit token budgets for different scenarios:
 
-| Scenario | Budget | What Gets Loaded |
-|----------|--------|------------------|
-| **Bootstrap** | ~2,000 tokens | STATUS.md only - enough to understand current state |
-| **Project Switch** | ~5,000 tokens | + project.yaml + context.md |
-| **Deep Work** | ~15,000 tokens | + component specs + security/infrastructure |
-| **Maximum** | ~50,000 tokens | Hard limit - trigger cleanup above this |
-| **Cleanup Threshold** | ~30,000 tokens | Suggest unloading stale context |
+| Scenario              | Budget         | What Gets Loaded                                    |
+| --------------------- | -------------- | --------------------------------------------------- |
+| **Bootstrap**         | ~2,000 tokens  | STATUS.md only - enough to understand current state |
+| **Project Switch**    | ~5,000 tokens  | + project.yaml + context.md                         |
+| **Deep Work**         | ~15,000 tokens | + component specs + security/infrastructure         |
+| **Maximum**           | ~50,000 tokens | Hard limit - trigger cleanup above this             |
+| **Cleanup Threshold** | ~30,000 tokens | Suggest unloading stale context                     |
 
 ### How Context Gets Loaded
 
@@ -242,41 +242,41 @@ project_focus:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CONTEXT FLOW                                  │
+│                    CONTEXT FLOW                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  SESSION START                                                   │
-│  │                                                               │
-│  ▼                                                               │
-│  ┌────────────────┐                                              │
-│  │  STATUS.md     │  ← Bootstrap (~2000 tokens)                  │
-│  │  (always)      │    "What's happening? Where are we?"         │
-│  └───────┬────────┘                                              │
-│          │                                                       │
-│          ▼                                                       │
-│  ┌────────────────┐                                              │
-│  │  User Request  │  ← "Work on my-project API auth"             │
-│  └───────┬────────┘                                              │
-│          │                                                       │
+│                                                                 │
+│  SESSION START                                                  │
+│  │                                                              │
+│  ▼                                                              │
+│  ┌────────────────┐                                             │
+│  │  STATUS.md     │  ← Bootstrap (~2000 tokens)                 │
+│  │  (always)      │    "What's happening? Where are we?"        │
+│  └───────┬────────┘                                             │
+│          │                                                      │
+│          ▼                                                      │
+│  ┌────────────────┐                                             │
+│  │  User Request  │  ← "Work on my-project API auth"            │
+│  └───────┬────────┘                                             │
+│          │                                                      │
 │          ├── Keyword "auth" detected ──▶ Load security.md       │
-│          │                                                       │
+│          │                                                      │
 │          ├── /focus my-project ──▶ Load project.yaml, context.md│
-│          │                                                       │
-│          └── Component "api" ──▶ Load components/api.md          │
-│                                                                  │
-│  DURING WORK                                                     │
-│  │                                                               │
+│          │                                                      │
+│          └── Component "api" ──▶ Load components/api.md         │
+│                                                                 │
+│  DURING WORK                                                    │
+│  │                                                              │
 │  ├── Action: code_generation ──▶ Ensure security.md loaded      │
-│  │                                                               │
-│  └── Above cleanup_threshold ──▶ Suggest /cleanup                │
-│                                                                  │
-│  SESSION END                                                     │
-│  │                                                               │
-│  ▼                                                               │
-│  ┌────────────────┐                                              │
-│  │  /save         │  ← Update STATUS.md with progress            │
-│  └────────────────┘                                              │
-│                                                                  │
+│  │                                                              │
+│  └── Above cleanup_threshold ──▶ Suggest /cleanup               │
+│                                                                 │
+│  SESSION END                                                    │
+│  │                                                              │
+│  ▼                                                              │
+│  ┌────────────────┐                                             │
+│  │  /save         │  ← Update STATUS.md with progress           │
+│  └────────────────┘                                             │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -399,52 +399,52 @@ Commands can be invoked as:
 
 ### Core Commands
 
-| Command | Aliases | Description |
-|---------|---------|-------------|
-| `/load-status` | `/status`, `--status`, `continue` | Load current state, continue work |
-| `/focus [project] [component]` | `--focus`, `switch to` | Change project/component focus |
-| `/save` | `--save`, `save progress` | Save session state |
-| `/handoff [tool]` | `--handoff`, `prepare for` | Prepare for tool transition |
-| `/plan` | `--plan` | Enter plan mode (no changes) |
-| `/act` | `--act` | Enter act mode (make changes) |
-| `/ask` | `--ask` | Enter ask mode (read-only) |
-| `/help` | `--help` | Show command reference |
-| `/cleanup` | `--cleanup` | Clean stale state |
-| `/decisions` | `--decisions` | View decision log |
-| `/todos` | `--todos` | View/manage todos |
-| `/sync-check` | `--sync-check` | Validate consistency |
+| Command                        | Aliases                           | Description                       |
+| ------------------------------ | --------------------------------- | --------------------------------- |
+| `/load-status`                 | `/status`, `--status`, `continue` | Load current state, continue work |
+| `/focus [project] [component]` | `--focus`, `switch to`            | Change project/component focus    |
+| `/save`                        | `--save`, `save progress`         | Save session state                |
+| `/handoff [tool]`              | `--handoff`, `prepare for`        | Prepare for tool transition       |
+| `/plan`                        | `--plan`                          | Enter plan mode (no changes)      |
+| `/act`                         | `--act`                           | Enter act mode (make changes)     |
+| `/ask`                         | `--ask`                           | Enter ask mode (read-only)        |
+| `/help`                        | `--help`                          | Show command reference            |
+| `/cleanup`                     | `--cleanup`                       | Clean stale state                 |
+| `/decisions`                   | `--decisions`                     | View decision log                 |
+| `/todos`                       | `--todos`                         | View/manage todos                 |
+| `/sync-check`                  | `--sync-check`                    | Validate consistency              |
 
 ### Project Commands
 
-| Command | Description |
-|---------|-------------|
-| `/new-project` | Create a new project with guided setup |
+| Command                  | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| `/new-project`           | Create a new project with guided setup          |
 | `/import-project [path]` | Import existing project by scanning folder/repo |
-| `/deprecate-project` | Mark project as deprecated |
-| `/delete-project` | Remove project from MCU |
+| `/deprecate-project`     | Mark project as deprecated                      |
+| `/delete-project`        | Remove project from MCU                         |
 
 ### Context Commands
 
-| Command | Description |
-|---------|-------------|
+| Command            | Description                    |
+| ------------------ | ------------------------------ |
 | `/update-universe` | Modify universal context files |
-| `/update-project` | Modify current project context |
+| `/update-project`  | Modify current project context |
 
 ### Feature & Review Commands
 
-| Command | Description |
-|---------|-------------|
-| `/plan-feature` | Guided feature planning workflow |
-| `/review security` | Security-focused code review |
-| `/review performance` | Performance review |
-| `/review code` | General code quality review |
+| Command               | Description                      |
+| --------------------- | -------------------------------- |
+| `/plan-feature`       | Guided feature planning workflow |
+| `/review security`    | Security-focused code review     |
+| `/review performance` | Performance review               |
+| `/review code`        | General code quality review      |
 
 ### MCU System Commands
 
-| Command | Description |
-|---------|-------------|
+| Command       | Description                                         |
+| ------------- | --------------------------------------------------- |
 | `/update-mcu` | Update, commit, and push changes to public MCU repo |
-| `/version` | Display the current MCU version |
+| `/version`    | Display the current MCU version                     |
 
 ### Error Handling
 
@@ -638,21 +638,21 @@ This scaffold comes with a recommended "default stack" optimized for:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    RECOMMENDED STACK                         │
+│                    RECOMMENDED STACK                        │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  BACKEND                    FRONTEND                         │
+│                                                             │
+│  BACKEND                    FRONTEND                        │
 │  ├── Go (APIs)              ├── React (Web)                 │
 │  ├── PostgreSQL (Neon)      ├── Flutter (Mobile)            │
 │  └── Redis (Redis Cloud)    └── Tauri (Desktop)             │
-│                                                              │
-│  INFRASTRUCTURE                                              │
-│  ├── Hetzner (Compute)                                       │
-│  ├── Neon (Database)                                         │
-│  ├── Redis Cloud (Cache)                                     │
+│                                                             │
+│  INFRASTRUCTURE                                             │
+│  ├── Hetzner (Compute)                                      │
+│  ├── Neon (Database)                                        │
+│  ├── Redis Cloud (Cache)                                    │
 │  ├── Cloudflare R2 (Storage)                                │
-│  └── Cloudflare (CDN)                                        │
-│                                                              │
+│  └── Cloudflare (CDN)                                       │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -682,28 +682,28 @@ The `/new-project` command will ask:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              TECHNOLOGY STACK SELECTION                      │
+│              TECHNOLOGY STACK SELECTION                     │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  What type of project?                                       │
-│  [ ] Web application                                         │
-│  [ ] Mobile app                                              │
-│  [ ] Desktop application                                     │
-│  [ ] API / Backend service                                   │
+│                                                             │
+│  What type of project?                                      │
+│  [ ] Web application                                        │
+│  [ ] Mobile app                                             │
+│  [ ] Desktop application                                    │
+│  [ ] API / Backend service                                  │
 │  [ ] Full-stack (multiple clients)                          │
-│                                                              │
-│  Backend language?                                           │
-│  [x] Go (Recommended)                                        │
-│  [ ] Python                                                  │
-│  [ ] Node.js                                                 │
-│  [ ] Rust                                                    │
-│                                                              │
-│  Database?                                                   │
+│                                                             │
+│  Backend language?                                          │
+│  [x] Go (Recommended)                                       │
+│  [ ] Python                                                 │
+│  [ ] Node.js                                                │
+│  [ ] Rust                                                   │
+│                                                             │
+│  Database?                                                  │
 │  [x] PostgreSQL via Neon (Recommended)                      │
 │  [ ] PostgreSQL via Supabase                                │
 │  [ ] SQLite via Turso                                       │
-│  [ ] MongoDB                                                 │
-│                                                              │
+│  [ ] MongoDB                                                │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -715,12 +715,12 @@ This scaffold supports MCP (Model Context Protocol) servers for enhanced Claude 
 
 ### Available MCP Servers
 
-| Server | Purpose | Setup Guide |
-|--------|---------|-------------|
-| Neon | PostgreSQL database management | [docs/mcp-servers/neon.md](docs/mcp-servers/neon.md) |
-| Hetzner | Cloud server management | [docs/mcp-servers/hetzner.md](docs/mcp-servers/hetzner.md) |
-| Redis Cloud | Cache management | [docs/mcp-servers/redis.md](docs/mcp-servers/redis.md) |
-| GitHub | Repository operations | [docs/mcp-servers/github.md](docs/mcp-servers/github.md) |
+| Server      | Purpose                        | Setup Guide                                                |
+| ----------- | ------------------------------ | ---------------------------------------------------------- |
+| Neon        | PostgreSQL database management | [docs/mcp-servers/neon.md](docs/mcp-servers/neon.md)       |
+| Hetzner     | Cloud server management        | [docs/mcp-servers/hetzner.md](docs/mcp-servers/hetzner.md) |
+| Redis Cloud | Cache management               | [docs/mcp-servers/redis.md](docs/mcp-servers/redis.md)     |
+| GitHub      | Repository operations          | [docs/mcp-servers/github.md](docs/mcp-servers/github.md)   |
 
 ### Configuring MCP Servers
 
@@ -750,12 +750,12 @@ See individual guides in `docs/mcp-servers/` for detailed setup.
 
 Pre-configured workflows in `.github/workflows/`:
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `ci.yml` | Push/PR | Run tests, linting, security checks |
-| `deploy-staging.yml` | Push to main | Deploy to staging |
-| `deploy-production.yml` | Release tag | Deploy to production |
-| `security-scan.yml` | Weekly | Dependency vulnerability scan |
+| Workflow                | Trigger      | Purpose                             |
+| ----------------------- | ------------ | ----------------------------------- |
+| `ci.yml`                | Push/PR      | Run tests, linting, security checks |
+| `deploy-staging.yml`    | Push to main | Deploy to staging                   |
+| `deploy-production.yml` | Release tag  | Deploy to production                |
+| `security-scan.yml`     | Weekly       | Dependency vulnerability scan       |
 
 ### Docker Templates
 
@@ -824,10 +824,10 @@ MCU is a **prompt-based instruction system**, not executable code. This has impo
 │                                                                 │
 │  MCU = Markdown files that Claude reads as instructions         │
 │                                                                 │
-│  ✓ CAN mitigate:     Input validation, mode enforcement,       │
+│  ✓ CAN mitigate:     Input validation, mode enforcement,        │
 │                      secret detection, confirmation prompts     │
 │                                                                 │
-│  ✗ CANNOT mitigate:  File tampering, cryptographic signing,    │
+│  ✗ CANNOT mitigate:  File tampering, cryptographic signing,     │
 │                      runtime validation, audit logging          │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -837,26 +837,26 @@ MCU is a **prompt-based instruction system**, not executable code. This has impo
 
 MCU includes prompt-level security controls in command definitions:
 
-| Protection | Description |
-|------------|-------------|
-| **Input Validation** | Project/component IDs must match `^[a-z0-9][a-z0-9-]*[a-z0-9]$` |
-| **Path Traversal Prevention** | Rejects IDs containing `/`, `..`, `\`, or spaces |
-| **Mode Enforcement** | File modifications require explicit `act` mode |
-| **Secret Detection** | Scans for API keys, passwords, tokens before writing |
-| **Import Verification** | Requires user confirmation before trusting external content |
-| **Commit Message Sanitization** | Rejects suspicious patterns in git messages |
+| Protection                      | Description                                                     |
+| ------------------------------- | --------------------------------------------------------------- |
+| **Input Validation**            | Project/component IDs must match `^[a-z0-9][a-z0-9-]*[a-z0-9]$` |
+| **Path Traversal Prevention**   | Rejects IDs containing `/`, `..`, `\`, or spaces                |
+| **Mode Enforcement**            | File modifications require explicit `act` mode                  |
+| **Secret Detection**            | Scans for API keys, passwords, tokens before writing            |
+| **Import Verification**         | Requires user confirmation before trusting external content     |
+| **Commit Message Sanitization** | Rejects suspicious patterns in git messages                     |
 
 ### Risks That CANNOT Be Addressed
 
 The following risks are **inherent to the prompt-based design** and cannot be fully mitigated:
 
-| Risk | Why It Cannot Be Fixed | Impact |
-|------|------------------------|--------|
-| **Prompt Injection via Files** | If malicious content is written to universe files, Claude will read it as instructions | An attacker with write access could modify `universe/security.md` to change security guidelines |
-| **State File Tampering** | YAML state files are human-editable with no integrity checking | Attacker could modify `state/focus.yaml` to bypass mode restrictions |
-| **No Cryptographic Signing** | There's no code to verify file signatures | Cannot detect if files were modified by unauthorized parties |
-| **No Audit Logging** | No persistent runtime to record actions | Cannot track what operations were performed or by whom |
-| **Context Loading Manipulation** | Keywords in messages trigger automatic context loading | Attacker could craft messages to load specific contexts |
+| Risk                             | Why It Cannot Be Fixed                                                                 | Impact                                                                                          |
+| -------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Prompt Injection via Files**   | If malicious content is written to universe files, Claude will read it as instructions | An attacker with write access could modify `universe/security.md` to change security guidelines |
+| **State File Tampering**         | YAML state files are human-editable with no integrity checking                         | Attacker could modify `state/focus.yaml` to bypass mode restrictions                            |
+| **No Cryptographic Signing**     | There's no code to verify file signatures                                              | Cannot detect if files were modified by unauthorized parties                                    |
+| **No Audit Logging**             | No persistent runtime to record actions                                                | Cannot track what operations were performed or by whom                                          |
+| **Context Loading Manipulation** | Keywords in messages trigger automatic context loading                                 | Attacker could craft messages to load specific contexts                                         |
 
 ### Trust Boundaries
 
@@ -1008,4 +1008,4 @@ claude
 # Then: "Read NEW_PROJECT.md and help me set up my universe"
 ```
 
-Happy building! 🚀
+Happy Vibing! 🚀
