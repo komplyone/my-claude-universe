@@ -70,7 +70,7 @@ MCU solves these problems with:
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/YOUR_USERNAME/my-claude-universe.git
+git clone https://github.com/komplyone/my-claude-universe.git
 cd my-claude-universe
 
 # 2. Initialize your universe (with Claude Code)
@@ -90,7 +90,7 @@ That's it! Claude will guide you through:
 
 ```bash
 # 1. Clone and enter
-git clone https://github.com/YOUR_USERNAME/my-claude-universe.git my-universe
+git clone https://github.com/komplyone/my-claude-universe.git my-universe
 cd my-universe
 
 # 2. Edit STATUS.md with your info
@@ -977,7 +977,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ```bash
 # Fork and clone
-git clone https://github.com/YOUR_USERNAME/my-claude-universe.git
+git clone https://github.com/komplyone/my-claude-universe.git
 
 # Create a branch
 git checkout -b feature/your-feature
