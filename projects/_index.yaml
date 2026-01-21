@@ -2,23 +2,95 @@
 # Master registry of all projects in this universe
 
 version: "1.0"
+last_updated: "2026-01-16"
 
 # Quick reference for all projects
 # Details in each project's project.yaml
 
-projects: []
-  # Example entry (uncomment and modify when creating first project):
-  #
-  # - id: my-project
-  #   name: My Project
-  #   tagline: What it does in one line
-  #   status: development  # concept | planned | development | beta | production | maintenance
-  #   priority: primary    # primary | secondary | normal | low
-  #   tech:
-  #     - go
-  #     - react
-  #     - postgresql
-  #   context: projects/my-project/context.md
+projects:
+  # ---------------------------------------------------------------------------
+  # RECOGER — Endpoint Compliance Platform
+  # ---------------------------------------------------------------------------
+  - id: recoger
+    name: Recoger
+    tagline: "Continuous collection of security posture"
+    category: software
+    status: development
+    priority: primary
+    tech:
+      - rust
+      - tauri
+      - react
+      - typescript
+      - python
+      - fastapi
+      - postgresql
+      - redis
+      - dart
+      - flutter
+    context: projects/recoger/context.md
+
+  # ---------------------------------------------------------------------------
+  # VELADOR — GRC Platform
+  # ---------------------------------------------------------------------------
+  - id: velador
+    name: Velador
+    tagline: "Compliance done right, not just done"
+    category: software
+    status: planned
+    priority: secondary
+    tech:
+      - python
+      - fastapi
+      - postgresql
+      - redis
+      - react
+      - typescript
+    context: projects/velador/context.md
+
+  # ---------------------------------------------------------------------------
+  # AIMIGAS — Human-AI Collaboration Research
+  # ---------------------------------------------------------------------------
+  - id: aimigas
+    name: Aimigas
+    tagline: "Human-AI collaboration platform"
+    category: software
+    status: development
+    priority: secondary
+    tech:
+      - python
+      - fastapi
+      - react
+      - typescript
+      - dart
+      - flutter
+    context: projects/aimigas/context.md
+
+  # ---------------------------------------------------------------------------
+  # KOMPLYONE WEB — Corporate Website
+  # ---------------------------------------------------------------------------
+  - id: komplyone-web
+    name: KomplyOne Website
+    tagline: "Corporate presence"
+    category: software
+    status: planned
+    priority: low
+    tech:
+      - astro
+      - typescript
+    context: projects/komplyone-web/context.md
+
+  # ---------------------------------------------------------------------------
+  # KOMPLYONE STUDIOS — Experimental/Creative
+  # ---------------------------------------------------------------------------
+  - id: komplyone-studios
+    name: KomplyOne Studios
+    tagline: "Experimental and creative projects"
+    category: general
+    status: concept
+    priority: low
+    tech: []
+    context: projects/komplyone-studios/context.md
 
 # Status definitions
 statuses:

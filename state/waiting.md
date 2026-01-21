@@ -1,82 +1,61 @@
-# Waiting / Blocked Items
+# Waiting for Approval
 
-> Items waiting for approval, external input, or blocked by dependencies.
-
----
-
-## Pending Approvals
-
-| Item | Waiting For | Since | Context |
-|------|-------------|-------|---------|
-| _None_ | | | |
-
-<!--
-Example:
-| Deploy to staging | User approval | 2024-01-15 | Ready to deploy, needs sign-off |
-| Database migration | DBA review | 2024-01-14 | Schema change needs review |
--->
+> Items proposed by Claude, awaiting Micke's decision.
 
 ---
 
-## Blocked by External
+## Pending Decisions
 
-| Item | Blocked By | Since | Notes |
-|------|------------|-------|-------|
-| _None_ | | | |
-
-<!--
-Example:
-| API integration | Third-party API access | 2024-01-10 | Applied for API key |
-| Design work | Designer availability | 2024-01-12 | Waiting for mockups |
--->
+*None currently*
 
 ---
 
-## Blocked by Internal
+## Pending Reviews
 
-| Item | Blocked By | Since | Notes |
-|------|------------|-------|-------|
-| _None_ | | | |
+*None currently*
 
-<!--
-Example:
-| Feature B | Feature A completion | 2024-01-15 | Depends on Feature A |
-| Mobile app | API endpoints | 2024-01-14 | Needs backend first |
--->
+---
+
+## Pending Actions
+
+*None currently*
 
 ---
 
 ## Recently Resolved
 
-| Item | Resolution | Date |
-|------|------------|------|
-| _None_ | | |
+| Item | Decision | Date |
+|------|----------|------|
+| Universe scaffold structure | Approved | 2025-01-15 |
+| `--` command prefix | Approved | 2025-01-15 |
+| Mode persistence | Approved | 2025-01-15 |
 
 ---
 
-## Managing This List
+## How This Works
 
-### Adding Items
+When Claude has something that needs Micke's approval:
 
-When something is blocked:
-1. Add to appropriate section
-2. Note what it's waiting for
-3. Include relevant context
+1. Claude adds item here with context
+2. Claude flags it in conversation
+3. Micke reviews and decides
+4. Item moves to "Recently Resolved"
+5. After 7 days, resolved items are archived
 
-### Resolving Items
+### Item Format
 
-When unblocked:
-1. Move to "Recently Resolved"
-2. Note the resolution
-3. Continue with the work
-
-### Checking Status
-
-Claude should check this file:
-- At session start (via /status)
-- Before proposing blocked work
-- When asked about blockers
+```markdown
+### [CATEGORY] Item Title
+**Added:** [date]
+**Priority:** [critical/high/normal/low]
+**Context:** [Why this needs decision]
+**Proposal:** [What Claude recommends]
+**Options:**
+1. [Option A] — [pros/cons]
+2. [Option B] — [pros/cons]
+**Recommendation:** [Claude's recommendation]
+```
 
 ---
 
-**Last Updated**: Never (template)
+*Updated by Claude when items are added/resolved*

@@ -13,11 +13,11 @@
 | Field | Value |
 |-------|-------|
 | **MCU Version** | v1 |
-| **User** | `[YOUR_NAME]` |
-| **MCU** | `[YOUR_MCU_NAME]` |
-| **Current Focus** | None (run setup first) |
-| **Mode** | Ask |
-| **Last Session** | Never |
+| **User** | Micke |
+| **MCU** | KomplyOne Universe |
+| **Current Focus** | komplyone-web |
+| **Mode** | Act |
+| **Last Session** | 2026-01-20 |
 
 ---
 
@@ -25,20 +25,29 @@
 
 ### Active Focus
 ```
-Project: [Not set - run /new-project or complete setup]
-Component: [Not set]
-Mode: ask
+Project: komplyone-web (Corporate Website)
+Component: main
+Mode: act
 ```
 
 ### What's Happening
-- **Fresh universe** - This scaffold hasn't been initialized yet
-- **Action needed** - Run setup via NEW_PROJECT.md
+- **Velador Website CREATED** - Complete marketing site with Astro + Tailwind
+- Amber/gold theme distinct from Recoger's cyan
+- Key message: "GRC reimagined — understand, know and control your own security"
 
-### Recent Progress
-_No sessions yet. This universe is brand new!_
+### Recent Progress (This Session - 2026-01-20)
+
+1. **Velador Website** ✅
+   - **Tech**: Astro + Tailwind CSS (same stack as Recoger)
+   - **Theme**: Amber/gold primary color, shield logo
+   - **Pages**: Homepage, Features, Pricing, About, Security, Contact, Early Access
+   - **Key Message**: "We don't hide compliance behind 'helpful' integrations"
+   - **Differentiators**: Software + implementation support, understanding over automation
+   - **Integration**: References Recoger for device compliance evidence
+   - **Build**: Successful (7 pages, 788ms)
 
 ### Open Threads
-_None_
+- User reviewing website locally (`npm run dev` on port 4321)
 
 ---
 
@@ -48,95 +57,78 @@ _None_
 _None_
 
 ### Waiting On
-_Nothing - ready to start!_
+- User feedback on Velador website design/content
 
 ### Blockers
 _None_
 
 ---
 
-## Next Steps
+## Projects Overview
 
-1. **Initialize your universe**
-   - Read NEW_PROJECT.md and follow the setup guide
-   - Or tell Claude: "Help me set up my universe"
-
-2. **Create your first project**
-   - Use `/new-project` command
-   - Or describe what you want to build
-
-3. **Start working**
-   - Use `/focus [project]` to set context
-   - Use `/plan` or `/act` mode as needed
+| Project | Status | Priority | Description |
+|---------|--------|----------|-------------|
+| **recoger** | development | primary | Endpoint compliance platform |
+| **velador** | development | secondary | GRC platform (website in progress) |
+| **aimigas** | development | secondary | Human-AI collaboration research |
+| **komplyone-web** | planned | low | Corporate website |
+| **komplyone-studios** | concept | low | Experimental projects |
 
 ---
 
-## Session Protocol
+## Next Steps
 
-### Starting a Session
-Claude should:
-1. Read this STATUS.md first
-2. Check `state/focus.yaml` for detailed focus
-3. Check `state/waiting.md` for pending items
-4. Summarize state and ask what to work on
+1. **Velador Website** (current)
+   - [ ] Review and refine based on user feedback
+   - [ ] Deploy to Cloudflare Pages
+   - [ ] Set up domain (velador.app)
 
-### During Work
-- Stay focused on current project/component
-- Document decisions in `state/decisions.md`
-- Update tasks in `state/todos.md`
-
-### Ending a Session
-Update this STATUS.md with:
-- What was accomplished
-- Any open threads
-- Suggested next steps
+2. **Recoger** (on hold)
+   - [ ] Verify Plan Configuration UI
+   - [ ] OpenTelemetry instrumentation
+   - [ ] CI/CD pipeline for Go API
 
 ---
 
 ## Quick Commands
 
 ```
-/load-status     - Reload this state
-/focus [p] [c]   - Switch project/component
-/save            - Save session progress
-/plan            - Enter plan mode (no changes)
-/act             - Enter act mode (make changes)
-/ask             - Enter ask mode (read-only)
-/help            - Show all commands
-/new-project     - Create a project
-/version         - Show MCU version
+/load-status     Load current state
+/focus [p] [c]   Switch project/component
+/save            Save session progress
+/plan            Plan mode (no changes)
+/act             Act mode (make changes)
+/ask             Ask mode (read-only)
+/help            Show all commands
 ```
 
 ---
 
-## File Map (What to Load When)
+## Files Modified This Session
 
-### Always Loaded (This File)
-- `STATUS.md` (~2000 tokens)
+**Velador Website** (NEW - `/Users/micke/Documents/rnd/komplyone/velador-website/`):
+- `package.json`, `astro.config.mjs`, `tsconfig.json` - Project setup
+- `tailwind.config.mjs` - Amber color palette
+- `src/styles/global.css` - Global styles
+- `src/config.ts` - Site configuration
+- `src/layouts/BaseLayout.astro` - Base layout
+- `src/components/ShieldLogo.astro` - Shield logo (animated)
+- `src/components/Header.astro` - Navigation header
+- `src/components/Footer.astro` - Site footer
+- `src/components/GRCDashboardMockup.astro` - Dashboard preview
+- `src/pages/index.astro` - Homepage
+- `src/pages/features.astro` - Features page
+- `src/pages/pricing.astro` - Pricing tiers
+- `src/pages/about.astro` - About page
+- `src/pages/security.astro` - Security page
+- `src/pages/contact.astro` - Contact form
+- `src/pages/early-access.astro` - Waitlist signup
+- `public/favicon.svg` - Shield favicon
 
-### On Project Focus
-- `projects/[project]/project.yaml`
-- `projects/[project]/context.md`
-
-### On Component Focus
-- `projects/[project]/components/[component].md`
-
-### On Security Work
-- `universe/security.md`
-
-### On Infrastructure Work
-- `universe/infrastructure.md`
-
-### On Brand/Identity Work
-- `universe/identity.md`
-
----
-
-## Notes
-
-_Add any persistent notes here that should survive across sessions._
+**MCU**:
+- `projects/velador/project.yaml` - Added website component
 
 ---
 
-**Last Updated**: Never (template)
-**Updated By**: Template
+**Last Updated**: 2026-01-20
+**Updated By**: Claude (Velador website creation)

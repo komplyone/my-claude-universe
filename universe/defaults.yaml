@@ -1,65 +1,29 @@
-# Universe Defaults
-# Default values for new projects. Override in project.yaml as needed.
+# Default settings for new projects
+# New projects inherit these unless overridden
 
-# Project defaults
-project:
-  status: concept  # concept | planned | development | beta | production | maintenance
-  priority: normal  # primary | secondary | normal | low
-
-# Budget defaults
 budget:
-  category: personal  # hobby | personal | startup | business
-  cost_priority: aggressive  # aggressive | moderate | relaxed
+  category: commercial
+  cost_priority: moderate
+  preferences:
+    hosting:
+      prefer: [hetzner, cloudflare, neon, redis-cloud]
+      avoid: [aws, azure, gcp]
+    services:
+      prefer_free_tier: true
+      accept_paid_for: [core-infrastructure, security]
 
-# Infrastructure defaults
-infrastructure:
-  compute: hetzner
-  database: neon
-  cache: redis-cloud
-  storage: cloudflare-r2
-  cdn: cloudflare
-  region: eu-central
-
-# Security defaults
 security:
-  profile: standard  # standard | high | critical
-  auth_required: true
-  rate_limiting: true
+  profile: high
+  requirements_file: universe/security.md
 
-# Technology defaults (by project type)
-tech_defaults:
-  api:
-    language: go
-    framework: chi
-    database: postgresql
+infrastructure:
+  region: eu
+  data_residency: eu-only
 
-  web:
-    language: typescript
-    framework: react
-    bundler: vite
-    styling: tailwind
+development:
+  require_tests: true
+  require_security_review: true
 
-  mobile:
-    framework: flutter
-    platforms: [ios, android]
-
-  desktop:
-    framework: tauri
-    platforms: [macos, windows, linux]
-
-  cli:
-    language: go
-
-# Component defaults
-component:
-  status: planned  # planned | active | maintenance | deprecated
-
-# State defaults
 state:
-  mode: ask  # plan | act | ask
-
-# Session defaults
-session:
-  auto_save: true
-  context_budget: 15000  # tokens
-  cleanup_threshold: 30000  # tokens
+  tasks_file: state/tasks.md
+  decisions_file: state/decisions.md
