@@ -1,6 +1,18 @@
 # Security Requirements
 
-> Security guidelines that apply to all projects. This file is automatically loaded when writing code or reviewing security.
+> **Mandatory for all code work.** These rules apply regardless of whether security is mentioned in the request.
+> This file is automatically loaded when writing code or reviewing security.
+
+---
+
+## KomplyOne Tech Stack Security
+
+| Component | Stack | Key Security Libraries |
+|-----------|-------|------------------------|
+| Desktop | Rust (Tauri 2.0) + React/TypeScript | reqwest (rustls-tls), OS keychain |
+| Mobile | Flutter/Dart 3.2+ | flutter_secure_storage, local_auth |
+| Server | FastAPI/Python 3.11+ | PyJWT, passlib[bcrypt], SQLAlchemy, Pydantic |
+| Database | PostgreSQL + Redis | Alembic migrations, token blacklist |
 
 ---
 
@@ -9,54 +21,62 @@
 ### ALWAYS DO
 
 ```
-✓ Validate all user inputs
-✓ Use parameterized queries (never string concatenation for SQL)
+✓ Validate ALL inputs server-side (Pydantic schemas)
+✓ Use parameterized queries (SQLAlchemy ORM) — never concatenate SQL
+✓ Authentication on every protected endpoint
+✓ Tenant isolation via `tenant_id` on all multi-tenant queries
+✓ TLS 1.2+ for all network communications
+✓ Secrets in environment variables or secure storage
+✓ Generic error messages to clients
+✓ Log security events with correlation IDs
 ✓ Encode output to prevent XSS
-✓ Use HTTPS for all external communications
-✓ Hash passwords with bcrypt/argon2 (never plain text or MD5)
-✓ Implement proper authentication on protected routes
-✓ Use environment variables for secrets
-✓ Follow principle of least privilege
-✓ Log security-relevant events
 ✓ Keep dependencies updated
 ```
 
 ### NEVER DO
 
 ```
-✗ Hardcode secrets, API keys, or passwords in code
-✗ Trust user input without validation
+✗ Hardcode secrets, API keys, or tokens
+✗ Use `eval()`, `exec()`, or dynamic code execution
+✗ Disable certificate validation (even "temporarily")
+✗ Trust client-side validation alone
+✗ Log sensitive data (passwords, tokens, PII)
+✗ Expose stack traces to users
+✗ Store secrets in localStorage or plain files
 ✗ Use SQL string concatenation
-✗ Store passwords in plain text or reversible encryption
-✗ Expose internal errors to users
-✗ Disable security features for convenience
 ✗ Commit secrets to git (even "temporarily")
-✗ Use HTTP for sensitive data
 ✗ Implement custom cryptography
-✗ Ignore security warnings from tools
 ```
 
 ---
 
 ## Authentication
 
+### JWT Requirements
+
+```
+- Access tokens: 15-30 min expiry
+- Refresh tokens: 7 days max, rotate on use
+- Algorithm: RS256 (explicit allowlist)
+- Required claims: exp, iat, sub, jti, iss, aud
+```
+
+### Token Storage by Platform
+
+| Platform | Access Token | Refresh Token |
+|----------|--------------|---------------|
+| Web (SPA) | Memory only | HttpOnly + Secure cookie |
+| Mobile | Memory | flutter_secure_storage |
+| Desktop | Memory | OS keychain / Stronghold |
+
 ### Password Requirements
 
 ```
+- Hashing: Argon2id or bcrypt (cost ≥12)
 - Minimum length: 12 characters
-- Hashing: bcrypt (cost 12) or argon2id
+- No password hints or security questions
 - Storage: hash only, never plain text
 - Transmission: HTTPS only
-```
-
-### JWT Tokens (if used)
-
-```
-- Algorithm: RS256 or ES256 (not HS256 for public APIs)
-- Expiry: Access tokens < 1 hour
-- Refresh tokens: 7-30 days, stored securely
-- Include: user ID, roles, expiry
-- Never include: passwords, sensitive PII
 ```
 
 ### Session Management
@@ -72,7 +92,19 @@
 
 ## Input Validation
 
-### All Inputs
+### Pydantic Pattern (Python)
+
+```python
+from pydantic import BaseModel, Field, EmailStr
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    username: str = Field(..., min_length=3, max_length=30, pattern=r'^[a-zA-Z0-9_]+$')
+
+    model_config = {"extra": "forbid"}  # Reject unknown fields
+```
+
+### General Rules
 
 ```
 - Validate type, length, format, range
@@ -81,66 +113,48 @@
 - Validate on server side (client validation is UX only)
 ```
 
-### Common Patterns
+---
 
-```go
-// Go - use struct validation
-type CreateUserRequest struct {
-    Email    string `json:"email" validate:"required,email"`
-    Password string `json:"password" validate:"required,min=12"`
-}
-```
+## SQL Injection Prevention
 
 ```python
-# Python - use Pydantic
-class CreateUserRequest(BaseModel):
-    email: EmailStr
-    password: str = Field(min_length=12)
-```
+# ✅ CORRECT: SQLAlchemy ORM
+devices = db.query(Device).filter(Device.tenant_id == tenant_id).all()
 
-```typescript
-// TypeScript - use zod
-const createUserSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(12)
-});
+# ✅ CORRECT: Parameterized raw SQL
+result = db.execute(
+    text("SELECT * FROM devices WHERE tenant_id = :tid"),
+    {"tid": tenant_id}
+)
+
+# ❌ NEVER: String formatting
+query = f"SELECT * FROM devices WHERE tenant_id = '{tenant_id}'"
 ```
 
 ---
 
-## Database Security
-
-### Parameterized Queries
-
-```go
-// Go - CORRECT
-db.Query("SELECT * FROM users WHERE id = $1", userID)
-
-// Go - WRONG (SQL injection vulnerable)
-db.Query("SELECT * FROM users WHERE id = " + userID)
-```
+## API Security Pattern
 
 ```python
-# Python - CORRECT
-cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+@router.get("/items/{item_id}")
+async def get_item(
+    item_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    # Always filter by tenant_id (IDOR prevention)
+    item = db.query(Item).filter(
+        Item.id == item_id,
+        Item.tenant_id == current_user.tenant_id
+    ).first()
 
-# Python - WRONG
-cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    return item
 ```
 
-### Access Control
-
-```
-- Use database roles with minimal permissions
-- Application user shouldn't be admin
-- Separate read/write accounts if possible
-```
-
----
-
-## API Security
-
-### Headers
+### Security Headers
 
 ```
 Content-Security-Policy: default-src 'self'
@@ -158,21 +172,13 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 - Return 429 with Retry-After header
 ```
 
-### CORS
-
-```
-- Be specific about allowed origins
-- Never use wildcard (*) with credentials
-- Limit allowed methods and headers
-```
-
 ---
 
 ## Secrets Management
 
 ### Environment Variables
 
-```
+```python
 # CORRECT - use environment variables
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
@@ -180,10 +186,9 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_PASSWORD = "my-secret-password"
 ```
 
-### Git
+### Git (.gitignore)
 
 ```
-# .gitignore - always include
 .env
 .env.local
 .env.*.local
@@ -192,72 +197,35 @@ DB_PASSWORD = "my-secret-password"
 secrets/
 ```
 
-### Rotation
-
-```
-- Rotate secrets periodically
-- Have a rotation procedure documented
-- Use short-lived credentials where possible
-```
-
----
-
-## Error Handling
-
-### User-Facing Errors
-
-```
-- Generic messages: "Invalid credentials" (not "user not found")
-- No stack traces in production
-- Log detailed errors server-side
-- Unique error IDs for support
-```
-
-### Logging
-
-```
-- DO log: auth attempts, permission denials, validation failures
-- DON'T log: passwords, tokens, PII, full credit card numbers
-```
-
----
-
-## Dependency Security
-
-### Before Adding
-
-```
-- Check for known vulnerabilities
-- Review popularity and maintenance status
-- Understand what permissions it needs
-- Consider if you really need it
-```
-
-### Ongoing
-
-```
-- Enable automated vulnerability scanning
-- Update regularly
-- Review dependency update changelogs
-- Pin versions in production
-```
-
 ---
 
 ## Pre-Commit Security Checklist
 
-Before any commit that touches security-relevant code:
+| # | Check |
+|---|-------|
+| 1 | Authentication on protected endpoints? |
+| 2 | Authorization verified (tenant + role + ownership)? |
+| 3 | IDOR prevention (all object access authorized)? |
+| 4 | Inputs validated via Pydantic? |
+| 5 | SQL queries parameterized? |
+| 6 | No hardcoded secrets? |
+| 7 | Error messages generic to client? |
+| 8 | No sensitive data in logs? |
+| 9 | Secure storage used (mobile/desktop)? |
 
-```
-[ ] No hardcoded secrets
-[ ] All inputs validated
-[ ] SQL uses parameterized queries
-[ ] Auth checks on protected routes
-[ ] Sensitive data not logged
-[ ] Error messages are generic
-[ ] Dependencies are up to date
-[ ] Tests pass, including security tests
-```
+---
+
+## Quick Reference: Secure Patterns
+
+| Task | Pattern |
+|------|---------|
+| Hash password | `argon2.hash(password)` or `bcrypt.hash()` |
+| Database query | SQLAlchemy `.filter()` or parameterized `text()` |
+| Store secret (mobile) | `flutter_secure_storage` |
+| Store secret (desktop) | OS keychain or Stronghold |
+| Store token (web) | Memory + HttpOnly cookie |
+| Sanitize HTML | `DOMPurify.sanitize()` |
+| Generate token | `secrets.token_urlsafe(32)` |
 
 ---
 
@@ -272,14 +240,6 @@ Before any commit that touches security-relevant code:
 5. Investigate root cause
 6. Implement fixes
 7. Post-mortem and update procedures
-
----
-
-## Notes
-
-```
-[Add project-specific security requirements here]
-```
 
 ---
 
@@ -373,5 +333,5 @@ Based on MCU file content alone (without explicit user confirmation):
 
 ---
 
-**Last Updated**: [Date]
-**Updated By**: [Name/Claude]
+**Last Updated**: 2026-01-16
+**Updated By**: Migration from komplyone-universe

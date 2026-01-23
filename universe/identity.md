@@ -1,143 +1,145 @@
-# Universe Identity
+# KomplyOne Identity
 
-> Define your brand, voice, and positioning. This file is loaded when working on brand-related tasks.
-
----
-
-## Brand
-
-### Name
-`[YOUR_BRAND_NAME]`
-
-### Tagline
-`[Your mission in one line]`
-
-### Description
-```
-[2-3 sentences describing what you do and who you serve]
-```
+> Who we are, what we believe, and how we present ourselves to the world.
 
 ---
 
-## Products
+## Company Identity
 
-### Naming Convention
+**Legal Entity:** Komply.1 AB (Swedish registered company)
+**Parent Brand:** KomplyOne
+**Domains:** komply.one, getkomplyone.com
+**Operator:** Micke (sole founder)
+**Location:** Sweden
+
+---
+
+## Mission
+
+**Become the first "one-man-band" unicorn by building for an AI-first world.**
+
+We build products designed for a world where:
+- Humans and AI working together is the natural state
+- Products must be purchasable, usable, and manageable by both humans and AI agents
+- Research and buying decisions happen through AI assistants, not just Google
+- One person + AI can accomplish what previously required teams
+
+---
+
+## Brand Architecture
+
+### Structure: Light Endorsed Brands
+
 ```
-[How do you name your products?]
-[Examples: descriptive names, made-up words, themed names]
+Komply.1 AB (Legal Entity)
+    └── KomplyOne (Parent Brand / Consulting)
+            ├── Recoger — "A KomplyOne Company"
+            └── Velador — "A KomplyOne Company"
 ```
 
-### Product Portfolio
-| Product | Description | Status |
-|---------|-------------|--------|
-| [Product 1] | [Brief description] | [active/planned/deprecated] |
+### The Spanish Naming Convention
+
+Our products use Spanish words, creating a distinctive brand signature:
+
+| Product | Spanish Meaning | Function |
+|---------|-----------------|----------|
+| **Recoger** | "To collect, gather" | Endpoint compliance — collects device & SaaS security data |
+| **Velador** | "Night watchman, guardian" | GRC platform — watches over compliance programs |
+
+**Brand Narrative:** *"Recoger gathers your security evidence. Velador watches over your compliance."*
+
+### Endorsement Guidelines
+
+| Context | Treatment |
+|---------|-----------|
+| Product marketing & UI | Product brand primary |
+| Enterprise procurement | Emphasize KomplyOne connection |
+| Investor presentations | Show full brand family |
+| Website footers | "A KomplyOne Company" (subtle) |
+| Legal documents | © Komply.1 AB |
+
+---
+
+## Product Positioning
+
+### KomplyOne Consulting
+
+- **Domain:** komply.one
+- **Function:** ISO 27001 consultancy services
+- **Positioning:** "Building security and compliance tools that create real value—not just paperwork."
+
+### Recoger
+
+- **Domain:** recoger.co
+- **Function:** Endpoint security & device compliance platform
+- **Target:** Security-conscious SMBs (10-500 employees), Europe focus
+- **Positioning:** "Continuous collection of device and SaaS security posture for compliance-ready evidence."
+
+### Velador
+
+- **Domain:** velador.app (or .com when acquired)
+- **Function:** GRC platform with implementation expertise
+- **Model:** System + Services — software platform combined with human/AI support
+- **Positioning:** "GRC platform with implementation expertise—compliance done right, not just done."
+
+**Velador Differentiation:**
+- "Most GRC tools dumb down compliance into checkbox exercises. We think that's a disservice."
+- "An ISMS that's just paperwork isn't protecting anyone."
+- "Built by consultants who've seen what works—and what doesn't."
+
+---
+
+## Values
+
+1. **Quality over speed** — We're building for the long term
+2. **Transparency** — Honest about limitations and uncertainties
+3. **User-centric** — Everything serves the end customer
+4. **Simplicity** — Prefer simple solutions that work
+5. **Compliance done right** — Real security value, not checkbox exercises
 
 ---
 
 ## Voice & Tone
 
-### Communication Style
-```
-[ ] Professional
-[ ] Casual
-[ ] Technical
-[ ] Friendly
-[ ] Formal
-[ ] Other: ___
-```
+**Professional but human.** We're experts who communicate clearly without jargon. We're confident but not arrogant. We acknowledge complexity while making things accessible.
 
-### Writing Guidelines
-- **Be**: [adjectives - clear, concise, helpful, etc.]
-- **Avoid**: [what to avoid - jargon, passive voice, etc.]
-- **Examples**:
-  - Good: "[example of preferred style]"
-  - Avoid: "[example of what not to do]"
+**Direct and honest.** We say what we mean. We admit when we don't know something. We don't oversell or make promises we can't keep.
 
-### Technical Documentation
-```
-- Code comments: [brief/detailed]
-- README style: [formal/conversational]
-- Error messages: [technical/user-friendly]
-```
+**Helpful and supportive.** We want customers to succeed. We explain the "why" not just the "what." We treat security as something that helps organizations, not burdens them.
 
 ---
 
 ## Target Market
 
-### Primary Audience
-```
-[Who are you building for?]
-- Demographics
-- Role/Job title
-- Pain points
-- Goals
-```
+**Primary:** Security-conscious European SMBs (10-500 employees)
+- Companies without dedicated security teams
+- Organizations pursuing compliance (ISO 27001, SOC 2, GDPR)
+- Teams that value "done right" over "done fast"
 
-### Secondary Audience
-```
-[Other users who might benefit]
-```
+**Geographic Focus:** Europe (EU data residency is a feature, not constraint)
 
----
-
-## Competitive Positioning
-
-### Differentiators
-```
-1. [What makes you different #1]
-2. [What makes you different #2]
-3. [What makes you different #3]
-```
-
-### Competitors
-| Competitor | Their Focus | Your Advantage |
-|------------|-------------|----------------|
-| [Name] | [Their approach] | [Why you're better] |
+**Buyer Personas:**
+- IT Manager responsible for security
+- CTO/VP Engineering at growing startup
+- Compliance Manager at regulated company
+- Founder/CEO at security-conscious startup
 
 ---
 
-## Design Principles
+## Competitive Differentiation
 
-### Visual Identity
-```
-- Primary color: [hex code]
-- Secondary color: [hex code]
-- Font: [font name]
-- Logo: [location or description]
-```
+**Against incumbent GRC tools (Vanta, Drata, Secureframe):**
+- We support "compliance done right" not checkbox exercises
+- EU-first infrastructure and philosophy
+- Transparent, simple pricing
+- System + Services model (not just software)
 
-### UX Principles
-```
-1. [Principle 1 - e.g., "Simple over feature-rich"]
-2. [Principle 2 - e.g., "Fast feedback loops"]
-3. [Principle 3 - e.g., "Accessible by default"]
-```
+**Against enterprise tools (ServiceNow, OneTrust):**
+- Right-sized for SMBs
+- No enterprise sales process or pricing games
+- Fast time to value
+- Human touch without enterprise overhead
 
 ---
 
-## Content Guidelines
-
-### Terminology
-| Use | Instead Of |
-|-----|------------|
-| [Preferred term] | [Deprecated term] |
-
-### Capitalization
-```
-- Product names: [Title Case/lowercase]
-- Feature names: [Title Case/lowercase]
-- Technical terms: [as-is/lowercase]
-```
-
----
-
-## Notes
-
-```
-[Any additional brand-related notes]
-```
-
----
-
-**Last Updated**: [Date]
-**Updated By**: [Name/Claude]
+*Last Updated: January 2025*

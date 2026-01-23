@@ -1,287 +1,277 @@
-# Infrastructure Standards
+# Infrastructure Patterns
 
-> Infrastructure and deployment guidelines for all projects. This file is loaded when working on infrastructure, deployment, or cost-related tasks.
-
----
-
-## Recommended Stack
-
-### Default Providers
-
-| Service | Provider | Why |
-|---------|----------|-----|
-| **Compute** | Hetzner | Excellent EU pricing, good performance |
-| **Database** | Neon | Serverless PostgreSQL, branching, generous free tier |
-| **Cache** | Redis Cloud | Managed Redis, free tier available |
-| **Storage** | Cloudflare R2 | S3-compatible, no egress fees |
-| **CDN** | Cloudflare | Fast, free tier, good security |
-| **DNS** | Cloudflare | Free, fast propagation |
-| **Monitoring** | Grafana Cloud | Free tier sufficient for small projects |
-| **CI/CD** | GitHub Actions | Integrated, generous free tier |
-
-### Alternative Options
-
-| Service | Alternatives |
-|---------|-------------|
-| Compute | AWS EC2, GCP Compute, DigitalOcean, Fly.io |
-| Database | Supabase, PlanetScale, AWS RDS |
-| Cache | Upstash, AWS ElastiCache |
-| Storage | AWS S3, GCP Cloud Storage |
+> Standard infrastructure stack for KomplyOne products. EU-first, cost-effective, managed services.
 
 ---
 
-## Region Strategy
+## Standard Stack
 
-### Primary Region
+| Component | Provider | Region | Rationale |
+|-----------|----------|--------|-----------|
+| **Compute** | Hetzner Cloud | Germany | EU-headquartered, cost-effective |
+| **Database** | Neon | Frankfurt | Serverless PostgreSQL, branching |
+| **Cache** | Redis Cloud | Frankfurt | Sessions, rate limiting, blacklist |
+| **CDN/WAF** | Cloudflare | Global | Free tier, DDoS protection |
+| **Storage** | Cloudflare R2 | EU | S3-compatible, no egress fees |
+| **Email** | Mailjet | EU | Transactional email |
+| **Monitoring** | BetterStack | - | Uptime, logs, status page |
+| **Errors** | Sentry | - | Error tracking (privacy-safe config) |
+| **Payments** | Stripe | Global | Self-serve billing |
 
-```
-Default: EU (Frankfurt / eu-central)
-Reasoning: GDPR compliance, good connectivity, cost-effective
-```
+---
 
-### Multi-Region (if needed)
+## Why This Stack
 
-```
-EU Primary: Frankfurt (eu-central)
-US: Virginia (us-east)
-Asia: Singapore (ap-southeast)
-```
+### EU Data Residency
+All customer data stays in EU:
+- Hetzner: German-headquartered, German datacenters
+- Neon: Frankfurt region
+- Redis Cloud: Frankfurt region
+- R2: EU storage location
 
-### Data Residency
+This is a **feature**, not a constraint. Security-conscious European customers value it.
 
-```
-- EU user data stays in EU
-- Consider regulatory requirements
-- Document data flow
-```
+### Cost Efficiency
+Pre-revenue cost target: <€20/month
+Growth phase (10-50 customers): <€150/month
+
+Free tiers:
+- Neon Free: 0.5GB storage, reasonable compute
+- Redis Cloud Free: 30MB
+- Cloudflare Free: CDN, WAF, 10GB R2
+- BetterStack Free: Basic monitoring
+- Sentry Free: Error tracking
+
+### Managed Services
+We use managed services to minimize operational overhead:
+- No self-hosted databases
+- No container orchestration (simple Docker on VMs)
+- No DIY monitoring
 
 ---
 
 ## Environment Strategy
 
-### Environments
+| Environment | Purpose | Database Branch |
+|-------------|---------|-----------------|
+| **Development** | Local dev | `development` |
+| **Staging** | Pre-prod testing | `staging` |
+| **Production** | Live system | `main` |
 
-| Environment | Purpose | Database |
-|-------------|---------|----------|
-| **local** | Development | Local or Neon branch |
-| **staging** | Pre-production testing | Neon branch |
-| **production** | Live users | Neon main |
-
-### Neon Branching
-
-```
-main (production)
-├── staging (persistent branch)
-├── feature-xyz (temporary, auto-delete)
-└── dev-[name] (developer branches)
-```
-
-### Environment Variables
-
-```
-# Pattern: SERVICE_ENV_KEY
-DATABASE_URL=...
-REDIS_URL=...
-API_KEY_STRIPE=...
-
-# Environment-specific
-NODE_ENV=development|staging|production
-```
-
----
-
-## Cost Guidelines
-
-### Budget Categories
-
-| Category | Monthly Target | Approach |
-|----------|----------------|----------|
-| **Hobby** | $0 | Free tiers only |
-| **Personal** | $0-50 | Minimal paid resources |
-| **Startup** | $50-500 | Scale as needed |
-| **Business** | $500+ | Optimize for reliability |
-
-### Cost Optimization
-
-```
-AGGRESSIVE (for hobby/personal):
-- Use free tiers aggressively
-- Shut down dev resources when not in use
-- Share staging environments
-- Minimize data transfer
-
-MODERATE (for startup):
-- Reserved instances where stable
-- Right-size resources
-- Monitor and alert on cost spikes
-
-RELAXED (for business):
-- Prioritize reliability over cost
-- Over-provision for safety
-- Focus on optimization later
-```
-
-### Free Tier Limits (Reference)
-
-| Provider | Free Tier |
-|----------|-----------|
-| Neon | 0.5GB storage, 1 compute, branching |
-| Redis Cloud | 30MB, 30 connections |
-| Cloudflare R2 | 10GB storage, 1M requests |
-| GitHub Actions | 2,000 min/month |
-| Hetzner | No free tier (but very cheap) |
+**Branch Refresh:**
+- `staging` ← `main` after each production release
+- `development` ← `staging` weekly or as needed
 
 ---
 
 ## Compute Sizing
 
-### Starting Points
+### Pre-Revenue
+- **Hetzner CX21:** 2 vCPU, 4GB RAM (~€6/mo)
+- Single container running API + Admin UI
+- Caddy as reverse proxy
 
-| Workload | Hetzner Type | vCPU | RAM |
-|----------|--------------|------|-----|
-| Small API | CX22 | 2 | 4GB |
-| Medium API | CX32 | 4 | 8GB |
-| Background Jobs | CX22 | 2 | 4GB |
-| Database (self-hosted) | CX42 | 8 | 16GB |
+### Growth Phase
+- **Hetzner CX31:** 4 vCPU, 8GB RAM (~€12/mo)
+- Consider separating API and Admin UI
+- Add worker container if needed
 
-### Scaling Indicators
-
-```
-Scale UP when:
-- CPU consistently > 70%
-- Memory consistently > 80%
-- Response times degrading
-- Queue backlogs growing
-
-Scale OUT when:
-- Single instance can't handle load
-- Need redundancy
-- Geographic distribution needed
-```
+### Scale Phase
+- Multiple VMs behind load balancer
+- Separate services (API, Admin, Workers)
+- Consider Kubernetes if complexity warrants
 
 ---
 
-## Database Guidelines
+## Database Patterns
 
-### PostgreSQL (Neon)
+### Neon Configuration
+- Connection pooling enabled (PgBouncer)
+- SSL required
+- Branching for dev/staging/production
 
-```
-- Use connection pooling (PgBouncer built-in)
-- Enable auto-scaling for production
-- Use branches for testing migrations
-- Monitor connection count
-```
+### Multi-Tenancy
+- Shared database, shared schema
+- `tenant_id` discriminator on all tenant tables
+- Row-Level Security (RLS) where feasible
 
 ### Migrations
+- Alembic for schema migrations
+- Always test on `development` → `staging` → `production`
+- Backward-compatible changes when possible
 
+---
+
+## Caching Patterns
+
+### Redis Usage
+| Use Case | Key Pattern | TTL |
+|----------|-------------|-----|
+| Session data | `session:{user_id}` | 30 min |
+| Rate limiting | `rate:{ip}:{endpoint}` | 1 min |
+| Token blacklist | `blacklist:{jti}` | Token expiry |
+| Cache | `cache:{entity}:{id}` | Varies |
+
+### Cache Invalidation
+- Explicit invalidation on write
+- TTL as safety net
+- No reliance on cache for correctness
+
+---
+
+## File Storage Patterns
+
+### R2 Bucket Structure
 ```
-- Always use migration files (never manual DDL)
-- Test on branch before production
-- Keep migrations reversible when possible
-- Review for locking (big tables)
+recoger-uploads/
+├── compliance-evidence/    # Customer uploads
+├── reports/                # Generated reports
+└── temp/                   # Temporary (auto-expire)
+
+recoger-agents/
+├── macos/                  # Agent downloads
+├── windows/
+└── linux/
 ```
 
-### Backups
+### File Upload Security
+- UUID filenames (ignore client filename)
+- Magic byte validation
+- Size limits per file and per tenant
+- Pre-signed URLs for direct upload/download
 
+---
+
+## Monitoring Setup
+
+### BetterStack
+- Health endpoint monitoring (1 min interval)
+- Status page at status.[product].app
+- Log aggregation via Vector
+
+### Sentry
+- Privacy-safe config (no PII)
+- Scrub sensitive headers
+- Environment tagging
+
+### Alerts
+| Severity | Response Time | Examples |
+|----------|---------------|----------|
+| Critical | Immediate | Service down |
+| High | 1 hour | Error spike, security event |
+| Medium | 4 hours | Performance degradation |
+| Low | 24 hours | Capacity warning |
+
+---
+
+## Static Website Deployment (Cloudflare Pages)
+
+Marketing and product websites are deployed to **Cloudflare Pages** with automatic Git-based deployment.
+
+### Configuration Files
+
+| File | Purpose |
+|------|---------|
+| `wrangler.toml` | Cloudflare Pages config, environment variables |
+| `astro.config.mjs` | Astro framework config, site URL |
+| `package.json` | Build scripts (`npm run build`) |
+
+### wrangler.toml Template
+```toml
+name = "project-website"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[vars]
+CORS_ORIGIN = "http://localhost:4321"
+
+# Production vars set in Cloudflare Dashboard:
+# - CORS_ORIGIN = "https://example.com"
+# - MAILJET_API_KEY (if contact forms)
+# - MAILJET_SECRET_KEY
 ```
-- Neon: Automatic point-in-time recovery
-- Self-hosted: Daily backups + WAL archiving
-- Test restore procedure quarterly
+
+### Deployment Flow
+1. Push code to `main` branch on GitHub
+2. Cloudflare Pages automatically detects changes
+3. Runs `npm run build` command
+4. Deploys `dist/` directory to production
+5. Preview deployments created for pull requests
+
+### Custom Domains
+Configure in Cloudflare Pages Dashboard → Custom domains:
+- Add domain (e.g., `recoger.co`, `komplyonestudios.co`)
+- Point DNS to Cloudflare Pages
+- SSL automatically provisioned
+
+### Pages Functions
+Backend APIs live in `/functions/` directory:
+```
+functions/
+├── api/
+│   ├── contact.js    # Contact form
+│   ├── waitlist.js   # Waitlist signup
+│   └── status.js     # Health check
+```
+
+### Deployed Websites
+| Project | URL | Repository |
+|---------|-----|------------|
+| Recoger | https://recoger.co | komplyone/recoger-website |
+| Velador | https://velador.co | komplyone/velador-website |
+| KomplyOne Studios | https://komplyonestudios.co | komplyone/komplyone-studios-website |
+
+---
+
+## Security Configuration
+
+### Cloudflare
+- SSL: Full (strict)
+- Minimum TLS: 1.2
+- WAF: Enabled
+- DDoS protection: Default
+
+### Headers (via Caddy)
+```
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
 ---
 
-## Deployment
+## Cost Projections
 
-### Deployment Checklist
+### Pre-Revenue (~€6/mo)
+| Service | Cost |
+|---------|------|
+| Hetzner CX21 | €5.83 |
+| Everything else | Free tier |
 
-```
-[ ] Tests pass
-[ ] Security review done
-[ ] Database migrations tested on branch
-[ ] Environment variables set
-[ ] Monitoring in place
-[ ] Rollback plan ready
-```
-
-### Deployment Pattern
-
-```
-1. Deploy to staging
-2. Run smoke tests
-3. Deploy to production (off-peak)
-4. Monitor for 30 minutes
-5. Celebrate or rollback
-```
-
-### Zero-Downtime Deploys
-
-```
-- Use rolling deployments
-- Database migrations must be backward-compatible
-- Feature flags for risky changes
-- Health checks configured
-```
+### Growth (~€125/mo)
+| Service | Cost |
+|---------|------|
+| Hetzner CX31 | €11.66 |
+| Neon Launch | €19 |
+| Redis Cloud | €7 |
+| Cloudflare Pro | €20 |
+| Mailjet Basic | €15 |
+| BetterStack Team | €24 |
+| Sentry Team | €26 |
 
 ---
 
-## Monitoring
+## Procurement Answers
 
-### Essential Metrics
-
-```
-- Request latency (p50, p95, p99)
-- Error rate
-- CPU/Memory utilization
-- Database connections
-- Queue depth (if applicable)
-```
-
-### Alerting
-
-```
-CRITICAL (page immediately):
-- Service down
-- Error rate > 5%
-- Database connection failures
-
-WARNING (check within hours):
-- Latency p95 > 1s
-- CPU > 80% sustained
-- Disk > 80%
-```
+| Question | Answer |
+|----------|--------|
+| Where is data stored? | Frankfurt, Germany (EU) |
+| Who hosts compute? | Hetzner (German-headquartered) |
+| Encrypted? | Yes — TLS 1.3 transit, AES-256 rest |
+| Backup policy? | PITR 7-30 days (DB), daily (Redis) |
+| GDPR? | Yes, all infrastructure EU-based |
+| SOC 2? | Providers are SOC 2 certified |
 
 ---
 
-## Security Infrastructure
-
-### Network
-
-```
-- VPC/private networking for internal services
-- Firewall rules: deny by default
-- No public database access
-- Use bastion/VPN for admin access
-```
-
-### TLS/SSL
-
-```
-- HTTPS everywhere (no exceptions)
-- Minimum TLS 1.2
-- Let's Encrypt for certificates
-- Auto-renewal configured
-```
-
----
-
-## Notes
-
-```
-[Add project-specific infrastructure notes here]
-```
-
----
-
-**Last Updated**: [Date]
-**Updated By**: [Name/Claude]
+*For deployment details, see RECOGER_DEPLOYMENT_PLAN.md*

@@ -1,0 +1,113 @@
+# KomplyOne Studios Project Definition
+
+id: komplyone-studios
+name: KomplyOne Studios
+version: "1.0.0"
+
+# =============================================================================
+# IDENTITY
+# =============================================================================
+
+brand:
+  tagline: "Build trust beautifully"
+  positioning: "The product studio arm of KomplyOne"
+  colors:
+    dark: "#060606"
+    light: "#FAFAFA"
+    orange: "#FF6B35"
+    pink: "#FF1B6B"
+    purple: "#A855F7"
+
+# =============================================================================
+# STATUS
+# =============================================================================
+
+status: development
+priority: secondary
+phase: development
+
+notes: |
+  KomplyOne Studios is the product studio showcasing all KomplyOne products:
+  - Recoger (endpoint compliance)
+  - Velador (GRC platform)
+  - Aimigas (human-AI collaboration)
+
+# =============================================================================
+# COMPONENTS
+# =============================================================================
+
+components:
+  web:
+    name: "Studios Website"
+    description: "Public-facing studios website"
+    status: development
+    path: /Users/micke/Documents/rnd/komplyone/komplyone-studios-website/
+    tech:
+      - Astro 5.x
+      - React 19
+      - Tailwind CSS 3.x
+      - TypeScript
+    site: https://studios.komplyone.com
+
+# =============================================================================
+# PRODUCTS
+# =============================================================================
+
+products:
+  recoger:
+    name: Recoger
+    meaning: "to collect"
+    description: "Endpoint security that doesn't treat people like problems"
+    accent: "#FF6B35"
+    status: "Coming Soon"
+    url: https://recoger.co
+
+  velador:
+    name: Velador
+    meaning: "the guardian"
+    description: "GRC reimagined - compliance done right"
+    accent: "#FF1B6B"
+    status: "In Development"
+    url: https://velador.co
+
+  aimigas:
+    name: Aimigas
+    meaning: "friends"
+    description: "Exploring human-AI collaboration"
+    accent: "#A855F7"
+    status: "Experimental"
+    url: https://aimigas.app
+
+# =============================================================================
+# BUDGET
+# =============================================================================
+
+budget:
+  category: standard
+  monthly_limit: 50
+  cost_priority: moderate
+  notes: "Cloudflare Pages hosting (free tier)"
+
+  preferences:
+    services:
+      prefer_free_tier: true
+      accept_paid_for:
+        - domain
+
+# =============================================================================
+# SECURITY
+# =============================================================================
+
+security:
+  profile: standard
+  requirements: universe/security.md
+
+# =============================================================================
+# RELATED FILES
+# =============================================================================
+
+files:
+  context: context.md
+  state:
+    focus: state/focus.yaml
+    session: state/session.md

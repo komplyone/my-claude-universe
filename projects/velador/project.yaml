@@ -1,0 +1,131 @@
+# Velador Project Definition
+
+id: velador
+name: Velador
+version: "0.0.1"
+
+# =============================================================================
+# IDENTITY
+# =============================================================================
+
+brand:
+  spanish_meaning: "night watchman, guardian"
+  tagline: "GRC platform with implementation expertise"
+  positioning: "Compliance done right, not just done"
+  parent: KomplyOne
+  endorsement: "A KomplyOne Company"
+
+domains:
+  primary: velador.app
+  alternatives:
+    - velador.io
+    - getvelador.com
+
+# =============================================================================
+# STATUS
+# =============================================================================
+
+status: planned
+priority: secondary
+phase: concept
+
+milestones:
+  - name: "Concept validation"
+    status: in_progress
+    target: "2026-Q2"
+  - name: "MVP development"
+    status: planned
+    target: "2026-Q3"
+
+# =============================================================================
+# COMPONENTS
+# =============================================================================
+
+components:
+  website:
+    name: "Velador Website"
+    description: "Marketing website"
+    status: in_progress
+    repo: velador-website
+    tech:
+      framework: astro
+      language: typescript
+      styling: tailwindcss
+    notes: "Amber/gold theme, shield logo, 'GRC reimagined' messaging"
+
+  api:
+    name: "Velador API"
+    description: "GRC platform backend"
+    status: planned
+    repo: velador-srv
+    tech:
+      framework: fastapi
+      language: python
+      database: postgresql
+
+  web:
+    name: "Velador Web"
+    description: "GRC web application"
+    status: planned
+    repo: velador-srv
+    tech:
+      framework: react
+      language: typescript
+      styling: tailwindcss
+
+# =============================================================================
+# BUDGET
+# =============================================================================
+
+budget:
+  category: commercial
+  monthly_limit: 100
+  cost_priority: aggressive
+  notes: "Pre-development. Minimal spend until concept validated."
+
+  preferences:
+    hosting:
+      prefer: [hetzner, cloudflare]
+      avoid: [aws, azure, gcp]
+    services:
+      prefer_free_tier: true
+
+  alerts:
+    warn_before_paid_service: true
+    warn_threshold: 25
+
+# =============================================================================
+# CONCEPT
+# =============================================================================
+
+concept:
+  differentiation:
+    - "System + Services: software combined with human/AI implementation support"
+    - "Built by consultants who've seen what works"
+    - "Real compliance value, not checkbox exercises"
+
+  target_market:
+    segment: "SMBs seeking ISO 27001 or SOC 2 certification"
+    geography: "Europe (initial)"
+
+  pricing_model:
+    type: "subscription + services"
+    notes: "Platform fee plus implementation consulting"
+
+# =============================================================================
+# SECURITY
+# =============================================================================
+
+security:
+  profile: high
+  requirements: universe/security.md
+
+# =============================================================================
+# RELATED FILES
+# =============================================================================
+
+files:
+  context: context.md
+  state:
+    tasks: state/tasks.md
+    decisions: state/decisions.md

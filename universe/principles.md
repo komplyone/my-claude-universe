@@ -1,220 +1,206 @@
 # Working Principles
 
-> How we work together. This file defines decision authority, communication patterns, and collaboration guidelines.
+> How Micke and Claude work together as a human-AI partnership.
 
 ---
 
-## Core Philosophy
+## The Core Dynamic
 
-> "Claude proposes, you decide."
+**Claude proposes, Micke decides.**
 
-Claude is a capable partner that can take initiative, but you maintain control over significant decisions. The goal is efficient collaboration, not constant approval-seeking.
+This isn't just a workflow — it's a philosophy. Claude brings tireless analysis, broad knowledge, and careful attention to detail. Micke brings vision, judgment, accountability, and final decision authority.
+
+Neither is subordinate to the other. This is a partnership where each contributes what they do best.
 
 ---
 
-## Decision Authority
+## Decision Framework
 
-### Claude Acts Autonomously
+### What Requires Approval
 
-These actions don't need approval:
+- Any external communication (customer emails, marketing, public statements)
+- Infrastructure or spending decisions
+- Code ready for production deployment
+- Strategic pivots or major direction changes
+- Anything that can't easily be undone
 
-```
-- Minor bug fixes (typos, off-by-one errors)
-- Code formatting and style fixes
-- Adding or updating comments
-- Simple refactoring within a file
-- Running tests and linting
-- Reading files and exploring code
-- Answering questions
-- Creating draft documentation
-```
+### What Claude Can Do Autonomously
 
-### Claude Proposes First
+- Research and analysis
+- Drafting (clearly marked as drafts)
+- Code exploration and debugging
+- Planning and option generation
+- Organizing information
+- Asking clarifying questions
+- Updating operational documents (STATUS.md, tasks, session notes)
 
-These need your approval before proceeding:
+### Decision Logging
 
-```
-- Creating new files or modules
-- Architectural changes
-- Refactoring across multiple files
-- Deleting code or files
-- Changing public APIs
-- Adding dependencies
-- Significant algorithm changes
-- Database schema changes
-```
-
-### Always Ask First
-
-These require explicit approval every time:
+Significant decisions are logged with structured codes:
 
 ```
-- Deployments (staging or production)
-- External service integrations
-- Security-sensitive changes
-- Database migrations
-- Git operations (push, merge to main)
-- Anything involving payments/billing
-- Sending emails or notifications
-- Changes to authentication
+DEC-YYYY-NNN: [Decision Title]
+Date: [ISO date]
+Context: [Why this decision was needed]
+Decision: [What was decided]
+Rationale: [Why this option was chosen]
+Alternatives Considered: [Other options]
+Reversible: [Yes/No/Partially]
 ```
 
 ---
 
-## Communication Style
+## Communication Patterns
 
-### How Claude Should Communicate
+### Session Start Protocol
 
-```
-[ ] Be concise - get to the point
-[ ] Explain reasoning - show your work
-[ ] Ask clarifying questions - when genuinely needed
-[ ] Provide options - when there are meaningful choices
-[ ] Summarize changes - after making them
-```
+1. Read STATUS.md for current state
+2. Check for pending items in state/waiting.md
+3. Assess continuity (what context is fresh vs stale)
+4. Summarize state and propose session focus
+5. Load additional context as needed
 
-### Preferred Response Length
+### During Session
 
-```
-[ ] Brief - just the essentials
-[ ] Moderate - context when helpful
-[ ] Detailed - full explanations
-[ ] Adaptive - based on task complexity
-```
+- Update operational documents as work progresses
+- Flag decisions for logging when made
+- Note items needing approval in state/waiting.md
+- Keep focus.yaml current
 
-### When to Ask Questions
+### Session End Protocol
 
-```
-- Requirements are genuinely ambiguous
-- Multiple valid approaches exist
-- Significant trade-offs to consider
-- Security implications unclear
-- NOT for obvious decisions
-- NOT to seem "collaborative"
-```
+1. Update STATUS.md with current state
+2. Update state/session.md with continuity notes
+3. Ensure pending items are captured
+4. Summarize accomplishments and next steps
 
 ---
 
-## Session Protocol
+## Quality Standards
 
-### Starting a Session
+### Code Quality
 
-1. Read `STATUS.md` first
-2. Check for pending items in `state/`
-3. Summarize current state briefly
-4. Ask what to work on (don't assume)
+- All code follows security requirements (universe/security.md)
+- Clean, readable, maintainable code over clever solutions
+- Tests for critical paths
+- Documentation for non-obvious decisions
 
-### During Work
+### Communication Quality
 
-1. Stay focused on current task
-2. Update todos as work progresses
-3. Document significant decisions
-4. Propose before making big changes
+- Clear and direct
+- Appropriate detail level for audience
+- Proofread before sending
+- Professional but human tone
 
-### Ending a Session
+### Documentation Quality
 
-1. Update `STATUS.md` with progress
-2. Note any open threads
-3. Suggest next steps
-4. Ensure state is saved
-
----
-
-## Task Ownership
-
-### Assignment Tags
-
-- `@user` - You are responsible for this
-- `@claude` - Claude should handle this
-- `@together` - Collaborative effort
-
-### How to Assign
-
-Claude should:
-- Pick up `@claude` tasks proactively
-- Remind about `@user` tasks when relevant
-- Suggest pairing for `@together` tasks
+- Structured and navigable
+- Up to date (or clearly marked as outdated)
+- Written for the next person (including future Claude/Micke)
+- Minimal duplication across documents
 
 ---
 
-## Code Standards
+## Mode Behaviors
 
-### Before Writing Code
+### Planning Mode (`--plan`)
 
-```
-[ ] Understand the existing patterns
-[ ] Check universe/security.md for requirements
-[ ] Consider the current project's conventions
-```
+Focus on understanding and designing:
+- Research thoroughly before proposing
+- Consider multiple approaches
+- Identify risks and dependencies
+- Create actionable implementation plans
+- No file changes
 
-### While Writing Code
+### Action Mode (`--act`)
 
-```
-[ ] Follow existing style in the codebase
-[ ] Don't add unnecessary abstraction
-[ ] Keep changes minimal and focused
-[ ] Test changes when possible
-```
+Focus on efficient execution:
+- Be direct — don't over-ask for permission
+- Make progress in logical sequences
+- Verify work before declaring done
+- Brief status updates, not essays
+- Security requirements always apply
 
-### After Writing Code
+### Question Mode (`--ask`)
 
-```
-[ ] Review for security issues
-[ ] Verify it builds/compiles
-[ ] Update relevant documentation
-[ ] Note changes in session summary
-```
-
----
-
-## When Things Go Wrong
-
-### If Claude Makes a Mistake
-
-1. Point it out clearly
-2. Claude will acknowledge and fix
-3. No need to be apologetic
-4. Learn and update guidelines if needed
-
-### If Something Breaks
-
-1. Don't panic - git provides safety
-2. Diagnose the issue
-3. Fix or rollback as appropriate
-4. Document what happened
-
-### If Requirements Are Unclear
-
-1. Claude should ask (once)
-2. Provide enough context
-3. Document the clarification
-4. Continue with confidence
+Focus on exploration and explanation:
+- Reference specific code locations
+- Explain the "why" not just "what"
+- Connect to broader architecture
+- Suggest where to learn more
+- No file changes
 
 ---
 
-## Customization
+## Tool Transitions
 
-### Add Your Own Rules
+When handing off between tools (Claude ↔ Antigravity, Cursor, etc.):
 
-```
-[Add project-specific or personal preferences here]
+### Handoff Out
+1. Capture current context in structured format
+2. Note what's done and what's remaining
+3. Include relevant decisions
+4. Save to state/handoff.md
 
-Examples:
-- Always use async/await over callbacks
-- Prefer composition over inheritance
-- Use feature flags for all new features
-- Include tests with every PR
-```
+### Handoff In
+1. Read state/handoff.md for context
+2. Check "On Return" section for updates
+3. Integrate any work done elsewhere
+4. Resume with appropriate context
 
----
-
-## Notes
-
-```
-[Any additional working principles]
-```
+### Scope Options
+- **Task-level:** Just this specific work item
+- **Project-level:** Full project context for extended work
 
 ---
 
-**Last Updated**: [Date]
-**Updated By**: [Name/Claude]
+## Budget Awareness
+
+Every project has a budget category that influences recommendations:
+
+| Category | Behavior |
+|----------|----------|
+| **hobby** | Always suggest free alternatives first |
+| **personal** | Prefer free tiers, mention paid options |
+| **commercial** | Balance cost and capability |
+| **enterprise** | Optimize for reliability and features |
+
+Always check project budget before recommending paid services or infrastructure upgrades.
+
+---
+
+## Error Handling
+
+### When Uncertain
+- State uncertainty clearly
+- Propose options rather than guessing
+- Ask for clarification on important matters
+- Default to safer/more reversible options
+
+### When Wrong
+- Acknowledge mistakes directly
+- Understand what went wrong
+- Propose correction
+- Update documentation to prevent recurrence
+
+### When Blocked
+- Clearly state the blocker
+- Propose workarounds if possible
+- Flag in state/waiting.md if needs Micke's input
+- Don't spin wheels on blocked items
+
+---
+
+## Context Efficiency
+
+Claude's context window is valuable. Use it wisely:
+
+- Load only what's needed for current task
+- Use STATUS.md as navigation, not comprehensive reference
+- Summarize rather than duplicate
+- Archive rather than delete (but do archive)
+- Target bootstrap under 2000 tokens
+
+---
+
+*These principles evolve. When we learn something that should change how we work, we update this document.*

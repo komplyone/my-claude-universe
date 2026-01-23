@@ -1,0 +1,120 @@
+# Aimigas Project Definition
+
+id: aimigas
+name: Aimigas
+version: "0.0.1"
+
+# =============================================================================
+# IDENTITY
+# =============================================================================
+
+brand:
+  spanish_meaning: "friends (feminine/AI)"
+  tagline: "Human-AI collaboration platform"
+  positioning: "Making AI collaboration accessible and productive"
+  parent: KomplyOne
+
+domains:
+  primary: aimigas.com
+  alternatives:
+    - aimigas.app
+    - aimigas.io
+
+# =============================================================================
+# STATUS
+# =============================================================================
+
+status: active
+priority: secondary
+phase: development
+
+notes: |
+  Aimigas explores human-AI collaboration patterns. Currently experimental,
+  learning from building other KomplyOne products with AI assistance.
+
+# =============================================================================
+# COMPONENTS
+# =============================================================================
+
+components:
+  backend:
+    name: "Aimigas Backend"
+    description: "API and orchestration"
+    status: experimental
+    repo: komplyone-platform
+    tech:
+      framework: fastapi
+      language: python
+
+  frontend:
+    name: "Aimigas Web"
+    description: "Web interface"
+    status: experimental
+    repo: komplyone-platform
+    tech:
+      framework: react
+      language: typescript
+
+  mobile:
+    name: "Aimigas Mobile"
+    description: "Mobile companion"
+    status: planned
+    repo: null
+    tech:
+      framework: flutter
+
+  website:
+    name: "Aimigas Website"
+    description: "Marketing site"
+    status: planned
+    repo: null
+
+# =============================================================================
+# BUDGET
+# =============================================================================
+
+budget:
+  category: personal
+  monthly_limit: 50
+  cost_priority: aggressive
+  notes: "Experimental project. Minimal investment until direction is clear."
+
+  preferences:
+    hosting:
+      prefer: [cloudflare, vercel]
+    services:
+      prefer_free_tier: true
+
+# =============================================================================
+# CONCEPT
+# =============================================================================
+
+concept:
+  vision: |
+    Explore and develop patterns for effective human-AI collaboration.
+    Learn by doing — building KomplyOne products with AI assistance
+    and extracting reusable patterns.
+
+  focus_areas:
+    - "Workflow patterns for human-AI teams"
+    - "Context management for AI collaboration"
+    - "Multi-tool AI workflows"
+    - "AI-first product design"
+
+# =============================================================================
+# SECURITY
+# =============================================================================
+
+security:
+  profile: standard
+  requirements: universe/security.md
+
+# =============================================================================
+# RELATED FILES
+# =============================================================================
+
+files:
+  context: context.md
+  state:
+    tasks: state/tasks.md
+    decisions: state/decisions.md

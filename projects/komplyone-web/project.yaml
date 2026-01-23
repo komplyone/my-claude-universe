@@ -1,0 +1,100 @@
+# KomplyOne Website Project Definition
+
+id: komplyone-web
+name: KomplyOne Website
+version: "0.0.1"
+
+# =============================================================================
+# IDENTITY
+# =============================================================================
+
+brand:
+  tagline: "Security and compliance tools that create real value"
+  positioning: "Parent brand and consulting website"
+
+domains:
+  primary: komply.one
+  alternatives:
+    - getkomplyone.com
+    - komplyone.com
+
+# =============================================================================
+# STATUS
+# =============================================================================
+
+status: planned
+priority: low
+phase: concept
+
+notes: |
+  Corporate website for KomplyOne. Lower priority than product websites.
+  Will serve as:
+  - Company overview
+  - Consulting services (ISO 27001)
+  - Product portfolio showcase
+  - Contact and about
+
+# =============================================================================
+# COMPONENTS
+# =============================================================================
+
+components:
+  main:
+    name: "KomplyOne Website"
+    description: "Corporate marketing website"
+    status: planned
+    repo: komplyone-web
+    tech:
+      framework: astro
+      styling: tailwindcss
+
+# =============================================================================
+# BUDGET
+# =============================================================================
+
+budget:
+  category: commercial
+  monthly_limit: 20
+  cost_priority: aggressive
+  notes: "Simple marketing site. Minimal infrastructure needed."
+
+  preferences:
+    hosting:
+      prefer: [cloudflare-pages, vercel]
+    services:
+      prefer_free_tier: true
+
+# =============================================================================
+# CONTENT
+# =============================================================================
+
+content:
+  pages:
+    - name: "Home"
+      purpose: "Company overview and value proposition"
+    - name: "Products"
+      purpose: "Portfolio of Recoger and Velador"
+    - name: "Consulting"
+      purpose: "ISO 27001 consulting services"
+    - name: "About"
+      purpose: "Company story and team"
+    - name: "Contact"
+      purpose: "Contact form and information"
+
+# =============================================================================
+# SECURITY
+# =============================================================================
+
+security:
+  profile: standard
+  requirements: universe/security.md
+
+# =============================================================================
+# RELATED FILES
+# =============================================================================
+
+files:
+  context: context.md
+  state:
+    tasks: state/tasks.md
+    decisions: state/decisions.md

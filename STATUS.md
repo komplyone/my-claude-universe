@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | komplyone-web |
 | **Mode** | Act |
-| **Last Session** | 2026-01-20 |
+| **Last Session** | 2026-01-23 |
 
 ---
 
@@ -25,29 +25,40 @@
 
 ### Active Focus
 ```
-Project: komplyone-web (Corporate Website)
-Component: main
+Project: komplyone-web
+Component: komplyone-web
 Mode: act
 ```
 
 ### What's Happening
-- **Velador Website CREATED** - Complete marketing site with Astro + Tailwind
-- Amber/gold theme distinct from Recoger's cyan
-- Key message: "GRC reimagined — understand, know and control your own security"
+- Aimigas website deployed to Cloudflare Pages
+- Debugging waitlist form 500 error (Mailjet sender domain not verified)
+- Fixed email input styling for dark mode and browser autofill
 
-### Recent Progress (This Session - 2026-01-20)
+### Recent Progress (This Session - 2026-01-23)
 
-1. **Velador Website** ✅
-   - **Tech**: Astro + Tailwind CSS (same stack as Recoger)
-   - **Theme**: Amber/gold primary color, shield logo
-   - **Pages**: Homepage, Features, Pricing, About, Security, Contact, Early Access
-   - **Key Message**: "We don't hide compliance behind 'helpful' integrations"
-   - **Differentiators**: Software + implementation support, understanding over automation
-   - **Integration**: References Recoger for device compliance evidence
-   - **Build**: Successful (7 pages, 788ms)
+1. **Aimigas Website** ✅
+   - Updated opening story text
+   - Changed footer copyright to KomplyOne Studios
+   - Added "No cookies" modal (adapted from Recoger)
+   - Implemented theme save with explicit consent (glowing diskette icon + modal)
+   - Created waitlist form with Mailjet integration
+   - Fixed email input dark mode background
+   - Fixed browser autofill styling override
+   - Pushed to GitHub (`komplyone/aimigas-website`)
+   - Deployed to Cloudflare Pages at `https://aimigas.co`
+
+2. **Issue: Waitlist 500 Error** ⚠️
+   - Mailjet API keys are set in Cloudflare
+   - Likely cause: `aimigas.co` domain not verified in Mailjet
+   - Need to add SPF/DKIM records or verify `noreply@aimigas.co` sender
+
+3. **KomplyOne Studios Website** ✅ (earlier)
+   - Created and deployed
 
 ### Open Threads
-- User reviewing website locally (`npm run dev` on port 4321)
+- Verify `aimigas.co` domain in Mailjet for email sending
+- Test waitlist form after Mailjet setup
 
 ---
 
@@ -57,10 +68,10 @@ Mode: act
 _None_
 
 ### Waiting On
-- User feedback on Velador website design/content
+- Mailjet domain verification for `aimigas.co`
 
 ### Blockers
-_None_
+- Waitlist form returns 500 until Mailjet sender is verified
 
 ---
 
@@ -68,25 +79,32 @@ _None_
 
 | Project | Status | Priority | Description |
 |---------|--------|----------|-------------|
-| **recoger** | development | primary | Endpoint compliance platform |
-| **velador** | development | secondary | GRC platform (website in progress) |
-| **aimigas** | development | secondary | Human-AI collaboration research |
-| **komplyone-web** | planned | low | Corporate website |
-| **komplyone-studios** | concept | low | Experimental projects |
+| **aimigas** | deployed | primary | Human-AI collaboration (website live, email pending) |
+| **komplyone-studios** | deployed | secondary | Product studio website |
+| **velador** | deployed | secondary | GRC platform (website live) |
+| **recoger** | development | secondary | Endpoint compliance platform |
+| **komplyone-web** | active | high | Corporate website |
 
 ---
 
 ## Next Steps
 
-1. **Velador Website** (current)
-   - [ ] Review and refine based on user feedback
-   - [ ] Deploy to Cloudflare Pages
-   - [ ] Set up domain (velador.app)
+1. **Aimigas Website** (deployed, email pending)
+   - [x] Deploy to Cloudflare Pages
+   - [x] Fix email input dark mode styling
+   - [x] Fix browser autofill styling
+   - [ ] Verify `aimigas.co` in Mailjet (add SPF/DKIM or sender)
+   - [ ] Test waitlist form
 
-2. **Recoger** (on hold)
-   - [ ] Verify Plan Configuration UI
-   - [ ] OpenTelemetry instrumentation
-   - [ ] CI/CD pipeline for Go API
+2. **Velador Website** (deployed)
+   - [x] Deploy to Cloudflare Pages
+   - [x] Hook up contact form
+   - [x] Hook up waitlist form
+
+3. **Recoger CI/CD** (pending)
+   - [ ] Create Machine Identity in Infisical
+   - [ ] Add secrets to GitHub repository
+   - [ ] Test staging deployment
 
 ---
 
@@ -106,29 +124,12 @@ _None_
 
 ## Files Modified This Session
 
-**Velador Website** (NEW - `/Users/micke/Documents/rnd/komplyone/velador-website/`):
-- `package.json`, `astro.config.mjs`, `tsconfig.json` - Project setup
-- `tailwind.config.mjs` - Amber color palette
-- `src/styles/global.css` - Global styles
-- `src/config.ts` - Site configuration
-- `src/layouts/BaseLayout.astro` - Base layout
-- `src/components/ShieldLogo.astro` - Shield logo (animated)
-- `src/components/Header.astro` - Navigation header
-- `src/components/Footer.astro` - Site footer
-- `src/components/GRCDashboardMockup.astro` - Dashboard preview
-- `src/pages/index.astro` - Homepage
-- `src/pages/features.astro` - Features page
-- `src/pages/pricing.astro` - Pricing tiers
-- `src/pages/about.astro` - About page
-- `src/pages/security.astro` - Security page
-- `src/pages/contact.astro` - Contact form
-- `src/pages/early-access.astro` - Waitlist signup
-- `public/favicon.svg` - Shield favicon
-
-**MCU**:
-- `projects/velador/project.yaml` - Added website component
+**Aimigas Website** (`aimigas-website`):
+- `src/pages/index.astro` - Updated story text, footer, theme save, no cookies modal, waitlist form, autofill fix
+- `functions/api/waitlist.js` - Cloudflare Pages function for Mailjet email
+- `wrangler.toml` - Cloudflare config with production CORS
 
 ---
 
-**Last Updated**: 2026-01-20
-**Updated By**: Claude (Velador website creation)
+**Last Updated**: 2026-01-23
+**Updated By**: Claude (Aimigas website deployment & styling fixes)
