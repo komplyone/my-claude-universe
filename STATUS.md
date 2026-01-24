@@ -15,7 +15,7 @@
 | **MCU Version** | v1 |
 | **User** | Micke |
 | **MCU** | KomplyOne Universe |
-| **Current Focus** | recoger |
+| **Current Focus** | recoger / mobile |
 | **Mode** | Act |
 | **Last Session** | 2026-01-24 |
 
@@ -26,7 +26,7 @@
 ### Active Focus
 ```
 Project: recoger
-Component: recoger
+Component: mobile
 Mode: act
 ```
 
