@@ -15,7 +15,7 @@
 | **MCU Version** | v1 |
 | **User** | Micke |
 | **MCU** | KomplyOne Universe |
-| **Current Focus** | komplyone-web |
+| **Current Focus** | recoger |
 | **Mode** | Act |
 | **Last Session** | 2026-01-24 |
 
@@ -25,8 +25,8 @@
 
 ### Active Focus
 ```
-Project: komplyone-web
-Component: komplyone-web
+Project: recoger
+Component: recoger
 Mode: act
 ```
 
@@ -44,6 +44,11 @@ Mode: act
 
 2. **Swedish Copy Update** ✅
    - Changed: "Vi är inte ännu en compliance-fabrik." → "Vi är inte en till compliance-fabrik."
+
+3. **Recoger Design System** ✅
+   - Created `DESIGN_SYSTEM.md` with complete brand guidelines
+   - Logo variants: radar icon, wordmarks (light/dark), large version
+   - Icon sprite with 24 common UI icons
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
@@ -113,7 +118,12 @@ _None_
 **KomplyOne Web** (`komplyone-web`):
 - `src/pages/sv/index.astro` - Updated Swedish copy
 
+**Recoger** (`recoger-website`):
+- `DESIGN_SYSTEM.md` - Complete design system documentation
+- `public/assets/logos/` - Logo variants (5 SVG files)
+- `public/assets/icons/icons.svg` - Icon sprite (24 icons)
+
 ---
 
 **Last Updated**: 2026-01-24
-**Updated By**: Claude (command palette, Swedish copy fix)
+**Updated By**: Claude (command palette, Swedish copy, Recoger design system)
