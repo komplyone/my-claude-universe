@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | komplyone-web |
 | **Mode** | Act |
-| **Last Session** | 2026-01-23 |
+| **Last Session** | 2026-01-24 |
 
 ---
 
@@ -35,32 +35,15 @@ Mode: act
 - Created OG images for all product sites
 - Contact form API converted to Astro API route
 
-### Recent Progress (This Session - 2026-01-23)
+### Recent Progress (This Session - 2026-01-24)
 
-1. **OG Images Created** ✅
-   - **Velador**: Shield with checkmark logo, "GRC reimagined."
-   - **KomplyOne**: K logo on light stone background, "Compliance for companies going places."
-   - **Aimigas**: Amber ampersand, "Your partner in everything."
-   - **KomplyOne Studios**: Gradient &K logo with Syne font, "Build trust beautifully."
+1. **MCU Command Palette** ✅
+   - Added graphical command palette to MCU repo
+   - React component + standalone HTML version
+   - Updated with current MCU v1 commands
 
-2. **Contact Form Fix** ✅
-   - Converted from Cloudflare Pages Function (`functions/api/contact.js`) to Astro API route (`src/pages/api/contact.ts`)
-   - Fixed deployment issue where functions weren't being included
-   - Deployed via Wrangler CLI
-
-3. **Swedish Copy Update** ✅
-   - Changed CTA: "Redo att göra compliance på ett nytt sätt?" → "Redo för compliance på ett nytt och smartare sätt?"
-
-4. **Earlier: KomplyOne Web** ✅
-   - Deployed to Cloudflare Pages at `https://komply.one`
-   - Set Mailjet secrets (MAILJET_API_KEY, MAILJET_SECRET_KEY)
-   - Updated CORS_ORIGIN to komply.one
-
-5. **Earlier: Version Bumps & URL Updates** ✅
-   - **Recoger**: 1.0.7 -> 1.0.8 (pushed)
-   - **Velador**: 0.0.1 -> 0.1.0 (updated velador.app -> velador.co, pushed)
-   - **KomplyOne Studios**: 1.0.0 -> 1.0.1 (pushed)
-   - **Aimigas**: 1.0.0 -> 1.0.1 (pushed)
+2. **Swedish Copy Update** ✅
+   - Changed: "Vi är inte ännu en compliance-fabrik." → "Vi är inte en till compliance-fabrik."
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
@@ -123,19 +106,14 @@ _None_
 
 ## Files Modified This Session
 
-**OG Images** (all pushed):
-- `velador-website/public/og-image.svg`, `og-image.png`
-- `komplyone-web/public/og-image.svg`, `og-image.png`
-- `aimigas-website/public/og-image.svg`, `og-image.png`
-- `komplyone-studios-website/public/og-image.svg`, `og-image.png`
-- `komplyone-studios-website/public/fonts/Syne-Regular.ttf`
+**MCU** (`my-claude-universe`):
+- `tools/command-palette/CommandPalette.jsx` - React command palette
+- `tools/command-palette/index.html` - Standalone HTML version
 
 **KomplyOne Web** (`komplyone-web`):
-- `src/pages/api/contact.ts` - New Astro API route for contact form
-- `astro.config.mjs` - Added platformProxy for Cloudflare
-- `src/pages/sv/index.astro` - Updated Swedish CTA text
+- `src/pages/sv/index.astro` - Updated Swedish copy
 
 ---
 
-**Last Updated**: 2026-01-23
-**Updated By**: Claude (OG images, contact form API fix, Swedish copy)
+**Last Updated**: 2026-01-24
+**Updated By**: Claude (command palette, Swedish copy fix)
