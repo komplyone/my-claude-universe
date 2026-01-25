@@ -32,30 +32,31 @@ Mode: act
 
 ### What's Happening
 - Recoger mobile app Firebase setup completed
-- Push notifications infrastructure ready for testing
+- Login and error handling improvements made
+- API domain updated to recoger.co
 
 ### Recent Progress (This Session - 2026-01-25)
 
 1. **Firebase Project Setup** ✅
    - Created Firebase project `recoger-15dbe`
-   - Registered iOS app (`1:445541872646:ios:bc973ba570fe348e567f87`)
-   - Registered Android app (`1:445541872646:android:b2186968882d6218567f87`)
-   - Generated all configuration files
+   - Registered iOS & Android apps
+   - APNs key uploaded with DeviceCheck/AppAttest
 
-2. **FlutterFire Configuration** ✅
-   - `lib/firebase_options.dart` - Dart configuration
-   - `android/app/google-services.json` - Android config
-   - `ios/Runner/GoogleService-Info.plist` - iOS config
-   - Xcode project updated with Firebase references
+2. **Login Flow Fixes** ✅
+   - Fixed API field: `username` → `email`
+   - Login now returns error message directly (not via state)
+   - SnackBar displays errors on failed login
+   - OAuth errors handled gracefully (no crash)
 
-3. **APNs Key Uploaded** ✅
-   - Created team-scoped APNs key with DeviceCheck/AppAttest
-   - Uploaded .p8 file to Firebase Console
+3. **API Domain Update** ✅
+   - Production: `https://api.recoger.co/api/v1`
+   - Staging: `https://staging-api.recoger.co/api/v1`
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
 - Reconnect GitHub to Cloudflare Pages for auto-deploy
-- Test push notifications on iOS/Android devices
+- Test login when API is back online (currently 521 error)
+- Test push notifications on real device
 
 ---
 
@@ -70,6 +71,7 @@ _None_
 
 ### Blockers
 - Cloudflare Pages GitHub connection lost (workaround: deploy via Wrangler CLI)
+- Recoger API at api.recoger.co returning 521 (server down)
 
 ---
 
@@ -87,10 +89,10 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Mobile - Test Push Notifications** (next session)
-   - [ ] Test on iOS simulator/device
-   - [ ] Test on Android emulator/device
-   - [ ] Verify Firebase initialization in app
+1. **Recoger Mobile - Test Login & Push** (blocked by API)
+   - [ ] Test login when API is back online
+   - [ ] Verify error messages display correctly
+   - [ ] Test push notifications on real device
 
 2. **Reconnect Cloudflare Pages** (recommended)
    - [ ] Go to Cloudflare Dashboard → Workers & Pages → komplyone-web
@@ -120,13 +122,13 @@ _None_
 ## Files Modified This Session
 
 **Recoger Mobile** (`komplyone-compliance-suite-monorepo/apps/recoger-mobile`):
-- `lib/firebase_options.dart` - Firebase Dart configuration
-- `android/app/google-services.json` - Android Firebase config
-- `ios/Runner/GoogleService-Info.plist` - iOS Firebase config (new)
-- `ios/Runner.xcodeproj/project.pbxproj` - Xcode project updated
-- `firebase.json` - Firebase project config (new)
+- `lib/config/environment.dart` - Updated API URLs to recoger.co
+- `lib/core/network/api_client.dart` - Fixed login field: username → email
+- `lib/features/auth/presentation/providers/auth_provider.dart` - Login returns error message
+- `lib/features/auth/presentation/screens/login_screen.dart` - Shows error via SnackBar
+- `lib/features/auth/data/services/oauth_service.dart` - Graceful OAuth error handling
 
 ---
 
 **Last Updated**: 2026-01-25
-**Updated By**: Claude (Firebase setup for recoger-mobile)
+**Updated By**: Claude (Login fixes, API domain update)
