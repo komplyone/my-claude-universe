@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | recoger / mobile |
 | **Mode** | Act |
-| **Last Session** | 2026-01-24 |
+| **Last Session** | 2026-01-25 |
 
 ---
 
@@ -31,28 +31,28 @@ Mode: act
 ```
 
 ### What's Happening
-- KomplyOne web deployed to Cloudflare Pages at komply.one
-- Created OG images for all product sites
-- Contact form API converted to Astro API route
+- Recoger mobile app Firebase setup completed
+- Push notifications infrastructure ready for testing
 
-### Recent Progress (This Session - 2026-01-24)
+### Recent Progress (This Session - 2026-01-25)
 
-1. **MCU Command Palette** ✅
-   - Added graphical command palette to MCU repo
-   - React component + standalone HTML version
-   - Updated with current MCU v1 commands
+1. **Firebase Project Setup** ✅
+   - Created Firebase project `recoger-15dbe`
+   - Registered iOS app (`1:445541872646:ios:bc973ba570fe348e567f87`)
+   - Registered Android app (`1:445541872646:android:b2186968882d6218567f87`)
+   - Generated all configuration files
 
-2. **Swedish Copy Update** ✅
-   - Changed: "Vi är inte ännu en compliance-fabrik." → "Vi är inte en till compliance-fabrik."
-
-3. **Recoger Design System** ✅
-   - Created `DESIGN_SYSTEM.md` with complete brand guidelines
-   - Logo variants: radar icon, wordmarks (light/dark), large version
-   - Icon sprite with 24 common UI icons
+2. **FlutterFire Configuration** ✅
+   - `lib/firebase_options.dart` - Dart configuration
+   - `android/app/google-services.json` - Android config
+   - `ios/Runner/GoogleService-Info.plist` - iOS config
+   - Xcode project updated with Firebase references
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
 - Reconnect GitHub to Cloudflare Pages for auto-deploy
+- Upload APNs key to Firebase Console for iOS push notifications
+- Test push notifications on real devices
 
 ---
 
@@ -84,12 +84,18 @@ _None_
 
 ## Next Steps
 
-1. **Reconnect Cloudflare Pages** (recommended)
+1. **Recoger Mobile - Push Notifications** (in progress)
+   - [ ] Upload APNs Authentication Key (.p8) to Firebase Console
+   - [ ] Commit Firebase config to monorepo
+   - [ ] Test on iOS simulator/device
+   - [ ] Test on Android emulator/device
+
+2. **Reconnect Cloudflare Pages** (recommended)
    - [ ] Go to Cloudflare Dashboard → Workers & Pages → komplyone-web
    - [ ] Settings → Builds & deployments → Connect to Git
    - [ ] Re-authorize GitHub and select komplyone/komplyone-web
 
-2. **Recoger Domain Redirect** (pending)
+3. **Recoger Domain Redirect** (pending)
    - [ ] Remove custom domains from `recoger-website` Pages project
    - [ ] Configure Redirect Rules: recoger.app -> recoger.co
 
@@ -111,19 +117,14 @@ _None_
 
 ## Files Modified This Session
 
-**MCU** (`my-claude-universe`):
-- `tools/command-palette/CommandPalette.jsx` - React command palette
-- `tools/command-palette/index.html` - Standalone HTML version
-
-**KomplyOne Web** (`komplyone-web`):
-- `src/pages/sv/index.astro` - Updated Swedish copy
-
-**Recoger** (`recoger-website`):
-- `DESIGN_SYSTEM.md` - Complete design system documentation
-- `public/assets/logos/` - Logo variants (5 SVG files)
-- `public/assets/icons/icons.svg` - Icon sprite (24 icons)
+**Recoger Mobile** (`komplyone-compliance-suite-monorepo/apps/recoger-mobile`):
+- `lib/firebase_options.dart` - Firebase Dart configuration
+- `android/app/google-services.json` - Android Firebase config
+- `ios/Runner/GoogleService-Info.plist` - iOS Firebase config (new)
+- `ios/Runner.xcodeproj/project.pbxproj` - Xcode project updated
+- `firebase.json` - Firebase project config (new)
 
 ---
 
-**Last Updated**: 2026-01-24
-**Updated By**: Claude (command palette, Swedish copy, Recoger design system)
+**Last Updated**: 2026-01-25
+**Updated By**: Claude (Firebase setup for recoger-mobile)
