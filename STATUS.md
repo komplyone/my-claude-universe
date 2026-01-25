@@ -48,11 +48,14 @@ Mode: act
    - `ios/Runner/GoogleService-Info.plist` - iOS config
    - Xcode project updated with Firebase references
 
+3. **APNs Key Uploaded** ✅
+   - Created team-scoped APNs key with DeviceCheck/AppAttest
+   - Uploaded .p8 file to Firebase Console
+
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
 - Reconnect GitHub to Cloudflare Pages for auto-deploy
-- Upload APNs key to Firebase Console for iOS push notifications
-- Test push notifications on real devices
+- Test push notifications on iOS/Android devices
 
 ---
 
@@ -84,11 +87,10 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Mobile - Push Notifications** (in progress)
-   - [ ] Upload APNs Authentication Key (.p8) to Firebase Console
-   - [ ] Commit Firebase config to monorepo
+1. **Recoger Mobile - Test Push Notifications** (next session)
    - [ ] Test on iOS simulator/device
    - [ ] Test on Android emulator/device
+   - [ ] Verify Firebase initialization in app
 
 2. **Reconnect Cloudflare Pages** (recommended)
    - [ ] Go to Cloudflare Dashboard → Workers & Pages → komplyone-web
