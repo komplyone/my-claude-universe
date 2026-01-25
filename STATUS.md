@@ -15,7 +15,7 @@
 | **MCU Version** | v1 |
 | **User** | Micke |
 | **MCU** | KomplyOne Universe |
-| **Current Focus** | recoger / mobile |
+| **Current Focus** | aimigas |
 | **Mode** | Act |
 | **Last Session** | 2026-01-25 |
 
@@ -25,37 +25,39 @@
 
 ### Active Focus
 ```
-Project: recoger
-Component: mobile
+Project: aimigas
+Component: selmain
 Mode: act
 ```
 
 ### What's Happening
-- Recoger mobile app Firebase setup completed
-- Login and error handling improvements made
-- API domain updated to recoger.co
+- Selma:in AI generation bugs fixed
+- Model selection now uses configured LLM (Opus 4.5)
+- Generation instructions persist correctly
 
 ### Recent Progress (This Session - 2026-01-25)
 
-1. **Firebase Project Setup** ✅
-   - Created Firebase project `recoger-15dbe`
-   - Registered iOS & Android apps
-   - APNs key uploaded with DeviceCheck/AppAttest
+1. **Selma:in Model Override** ✅
+   - Fixed: generation now uses Selma:in's configured LLM model
+   - Added `model_override` parameter through full stack
+   - Frontend passes `llmModel` from op settings
 
-2. **Login Flow Fixes** ✅
-   - Fixed API field: `username` → `email`
-   - Login now returns error message directly (not via state)
-   - SnackBar displays errors on failed login
-   - OAuth errors handled gracefully (no crash)
+2. **Generation Instructions Persistence** ✅
+   - Fixed: `generation_instructions` now saved to database
+   - Added missing field to `update_article` SQL query
 
-3. **API Domain Update** ✅
-   - Production: `https://api.recoger.co/api/v1`
-   - Staging: `https://staging-api.recoger.co/api/v1`
+3. **AI Response Parsing** ✅
+   - Improved JSON extraction from AI responses
+   - Handles markdown code blocks (```json ... ```)
+   - Better fallback for non-JSON responses
+
+4. **Debug Logging** ✅
+   - Added comprehensive logging for generation troubleshooting
+   - Logs model selection, API key resolution, response handling
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
 - Reconnect GitHub to Cloudflare Pages for auto-deploy
-- Test login when API is back online (currently 521 error)
 - Test push notifications on real device
 
 ---
@@ -71,7 +73,6 @@ _None_
 
 ### Blockers
 - Cloudflare Pages GitHub connection lost (workaround: deploy via Wrangler CLI)
-- Recoger API at api.recoger.co returning 521 (server down)
 
 ---
 
@@ -89,10 +90,9 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Mobile - Test Login & Push** (blocked by API)
-   - [ ] Test login when API is back online
-   - [ ] Verify error messages display correctly
-   - [ ] Test push notifications on real device
+1. **Selma:in Enhancements** (optional)
+   - [ ] Test generation with different models
+   - [ ] Add streaming support for generation
 
 2. **Reconnect Cloudflare Pages** (recommended)
    - [ ] Go to Cloudflare Dashboard → Workers & Pages → komplyone-web
@@ -121,14 +121,19 @@ _None_
 
 ## Files Modified This Session
 
-**Recoger Mobile** (`komplyone-compliance-suite-monorepo/apps/recoger-mobile`):
-- `lib/config/environment.dart` - Updated API URLs to recoger.co
-- `lib/core/network/api_client.dart` - Fixed login field: username → email
-- `lib/features/auth/presentation/providers/auth_provider.dart` - Login returns error message
-- `lib/features/auth/presentation/screens/login_screen.dart` - Shows error via SnackBar
-- `lib/features/auth/data/services/oauth_service.dart` - Graceful OAuth error handling
+**Rust API** (`komplyone-platform/rust-api`):
+- `crates/komplyone-api/src/routes/selmain.rs` - Model override, JSON parsing, logging
+- `crates/komplyone-core/src/modules/conversation/service.rs` - Model override support
+- `crates/komplyone-core/src/modules/conversation/types.rs` - Added model_override field
+- `crates/komplyone-core/src/modules/selmain/types.rs` - Added model field
+- `crates/komplyone-db/src/queries/selmain.rs` - Fixed generation_instructions persistence
+
+**Web Frontend** (`komplyone-platform/web`):
+- `src/types/index.ts` - Added model to GenerateContentRequest
+- `src/store/selmain.ts` - Pass model parameter
+- `src/ops/selmain/SelmainOp.tsx` - Get llmModel from settings
 
 ---
 
 **Last Updated**: 2026-01-25
-**Updated By**: Claude (Login fixes, API domain update)
+**Updated By**: Claude (Selma:in AI model selection fixes)
