@@ -31,75 +31,55 @@ Mode: act
 ```
 
 ### What's Happening
-- Velador NotionEditor improvements (bubble menu, slash menu)
-- Recoger onboarding system (Phase 1, 2 & 3 partial complete)
+- Velador Meetings feature enhancements
+- Meeting items CRUD, reordering, unsaved changes guard
 
 ### Recent Progress (This Session - 2026-01-28)
 
+1. **Velador Meeting Items CRUD** ✅
+   - Added full CRUD operations for agenda, homework, and action items
+   - Backend endpoints for create, update, delete on all item types
+   - Frontend forms and mutation hooks for all operations
+   - Toggle completion status for all item types
+
+2. **Velador Item Reordering** ✅
+   - Added `sort_order` field to homework and action items (migration)
+   - Updated SQLAlchemy models with `order_by` relationships
+   - Implemented up/down arrow buttons with hover visibility
+   - Sequential sort_order assignment on reorder
+
+3. **Velador Navigation Guard** ✅
+   - Created `NavigationGuardContext` for tracking unsaved changes
+   - Show confirmation dialog when navigating with unsaved notes/summary
+   - Works for sidebar navigation, back link, and browser close
+   - Options: Save & Leave, Discard Changes, Cancel
+
+4. **Velador Meeting UX Improvements** ✅
+   - Tab persistence (stay on same tab after save)
+   - Cancel meeting dialog with confirmation
+   - Version indicator in sidebar (v1.0.2) for debugging
+
+### Previous Session (2026-01-28 - Earlier)
+
 1. **Velador NotionEditor Enhancements** ✅
    - Implemented custom bubble menu (floating toolbar on text selection)
-   - Added all formatting options to bubble menu: Bold, Italic, Underline, Strikethrough, Code, Highlight, Text, H1-H3, Lists, Quote, Code Block
-   - Redesigned slash menu to Notion-style (compact with icon + label, all items visible)
-   - Used custom implementation (TipTap v3.x doesn't export BubbleMenu)
+   - Added all formatting options to bubble menu
+   - Redesigned slash menu to Notion-style
 
 2. **Recoger API Fix** ✅
-   - Fixed syntax error in `apps/recoger-web/src/lib/api.ts`
-   - Issue: Response interceptor was missing its wrapper function
-   - Fix: Added `api.interceptors.response.use()` wrapper
+   - Fixed syntax error in response interceptor
 
 ### Previous Session (2026-01-27)
 
 1. **Recoger Onboarding System Frontend (Phase 2)** ✅
-   - Created TypeScript types (types/index.ts)
-   - Created TanStack Query API hooks (api/index.ts)
-   - Created Zustand store for UI state (stores/onboarding-store.ts)
-   - Created ProgressRing component (circular progress indicator)
-   - Created OnboardingBeacon component (nav bar trigger)
-   - Created OnboardingPanel component (slide-out panel)
-   - Created PanelHeader, PanelFooter components
-   - Created Section, SectionList, StepItem components
-   - Integrated beacon into admin and user dashboard headers
-   - Integrated panel into admin and user dashboard layouts
+   - Created TypeScript types, TanStack Query hooks, Zustand store
+   - Created ProgressRing, OnboardingBeacon, OnboardingPanel components
+   - Integrated into admin and user dashboard layouts
 
 2. **Recoger Onboarding System Frontend (Phase 3 - partial)** ✅
-   - Created step content components:
-     - SuccessMessage, InfoCards, GuideWithLink
-     - WaitingState, ExpandableList, TabbedInstructions
-     - ComplianceStatusCard
+   - Created step content components (SuccessMessage, InfoCards, etc.)
    - Created StepContent dynamic renderer
    - Created OnboardingErrorBoundary
-   - Wrapped panel content with error boundary
-
-### Previous Session (2026-01-26)
-
-1. **Onboarding System Backend (Phase 1)** ✅
-   - Created database migrations (000011, 000012)
-   - Created domain layer: entity.go, repository.go, service.go
-   - Added onboarding fields to Tenant entity
-   - Implemented repository with sqlc queries
-   - Created DTOs and HTTP handler
-   - Registered routes: GET /onboarding, POST /onboarding/dismiss, POST /onboarding/events
-   - Wired up service in app initialization
-
-### Previous Session (2026-01-25)
-
-1. **Selma:in Model Override** ✅
-   - Fixed: generation now uses Selma:in's configured LLM model
-   - Added `model_override` parameter through full stack
-   - Frontend passes `llmModel` from op settings
-
-2. **Generation Instructions Persistence** ✅
-   - Fixed: `generation_instructions` now saved to database
-   - Added missing field to `update_article` SQL query
-
-3. **AI Response Parsing** ✅
-   - Improved JSON extraction from AI responses
-   - Handles markdown code blocks (```json ... ```)
-   - Better fallback for non-JSON responses
-
-4. **Debug Logging** ✅
-   - Added comprehensive logging for generation troubleshooting
-   - Logs model selection, API key resolution, response handling
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
@@ -136,22 +116,22 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Onboarding Implementation** (active)
-   - [x] Phase 1: Backend foundation (models, service, endpoints) ✅
-   - [x] Phase 2: Frontend foundation (store, beacon, panel, Journey 1) ✅
-   - [~] Phase 3: Step content components ✅, animations pending (need npm install)
+1. **Velador Meetings** (current)
+   - [x] Meeting items CRUD (agenda, homework, action items) ✅
+   - [x] Item reordering (up/down arrows) ✅
+   - [x] Unsaved changes navigation guard ✅
+   - [ ] Meeting templates (optional future enhancement)
+
+2. **Recoger Onboarding Implementation** (paused)
+   - [x] Phase 1: Backend foundation ✅
+   - [x] Phase 2: Frontend foundation ✅
+   - [~] Phase 3: Step content components ✅, animations pending
    - [ ] Phase 4: Accessibility, analytics, nudges
-   - See: `komplyone-universe/projects/recoger/components/onboarding-implementation-plan.md`
    - **To complete Phase 3**: Run `npm install framer-motion canvas-confetti`
 
-2. **Recoger Domain Redirect** (pending)
+3. **Recoger Domain Redirect** (pending)
    - [ ] Remove custom domains from `recoger-website` Pages project
    - [ ] Configure Redirect Rules: recoger.app -> recoger.co
-
-3. **Reconnect Cloudflare Pages** (recommended)
-   - [ ] Go to Cloudflare Dashboard → Workers & Pages → komplyone-web
-   - [ ] Settings → Builds & deployments → Connect to Git
-   - [ ] Re-authorize GitHub and select komplyone/komplyone-web
 
 ---
 
@@ -171,43 +151,23 @@ _None_
 
 ## Files Modified This Session
 
+**Velador API** (`komplyone-compliance-suite-monorepo/apps/velador-api`):
+- `app/api/v1/endpoints/meeting.py` - CRUD endpoints for items
+- `app/models/meeting.py` - sort_order field, order_by relationships
+- `app/schemas/meeting.py` - sort_order in schemas
+- `app/services/meeting_service.py` - CRUD service methods
+- `alembic/versions/20260128_2125-...` - sort_order migration
+
 **Velador Web** (`komplyone-compliance-suite-monorepo/apps/velador-web`):
-- `src/components/NotionEditor.tsx` - Complete rewrite with custom bubble menu and compact slash menu
-
-**Recoger Web** (`komplyone-compliance-suite-monorepo/apps/recoger-web`):
-- `src/lib/api.ts` - Fixed missing response interceptor wrapper
-
-*Phase 2 - Core components:*
-- `src/features/onboarding/types/index.ts` - TypeScript types
-- `src/features/onboarding/api/index.ts` - TanStack Query hooks
-- `src/features/onboarding/stores/onboarding-store.ts` - Zustand store
-- `src/features/onboarding/components/progress-ring.tsx` - Progress ring SVG
-- `src/features/onboarding/components/onboarding-beacon.tsx` - Nav bar trigger
-- `src/features/onboarding/components/onboarding-panel.tsx` - Slide-out panel
-- `src/features/onboarding/components/panel-header.tsx` - Panel header
-- `src/features/onboarding/components/panel-footer.tsx` - Panel footer
-- `src/features/onboarding/components/section.tsx` - Collapsible section
-- `src/features/onboarding/components/section-list.tsx` - Section container
-- `src/features/onboarding/components/step-item.tsx` - Step item
-- `src/features/onboarding/components/index.ts` - Component exports
-- `src/features/onboarding/index.ts` - Feature exports
-- `src/features/admin/components/header.tsx` - Added OnboardingBeacon
-- `src/features/admin/components/dashboard-layout.tsx` - Added OnboardingPanel
-- `src/features/user/components/user-dashboard-layout.tsx` - Added beacon + panel
-
-*Phase 3 - Step content components:*
-- `src/features/onboarding/components/steps/success-message.tsx`
-- `src/features/onboarding/components/steps/info-cards.tsx`
-- `src/features/onboarding/components/steps/guide-with-link.tsx`
-- `src/features/onboarding/components/steps/waiting-state.tsx`
-- `src/features/onboarding/components/steps/expandable-list.tsx`
-- `src/features/onboarding/components/steps/tabbed-instructions.tsx`
-- `src/features/onboarding/components/steps/compliance-status-card.tsx`
-- `src/features/onboarding/components/steps/index.ts`
-- `src/features/onboarding/components/step-content.tsx` - Dynamic renderer
-- `src/features/onboarding/components/onboarding-error-boundary.tsx`
+- `src/App.tsx` - NavigationGuardProvider wrapper
+- `src/components/AppShell.tsx` - Navigation guard dialog, version indicator
+- `src/contexts/NavigationGuardContext.tsx` - New context for unsaved changes
+- `src/hooks/useMeetings.ts` - CRUD mutation hooks for items
+- `src/lib/api.ts` - API methods for item CRUD
+- `src/pages/MeetingDetailPage.tsx` - Full rewrite with items, tabs, reordering
+- `src/pages/MeetingsPage.tsx` - Cancel meeting dialog
 
 ---
 
 **Last Updated**: 2026-01-28
-**Updated By**: Claude (Velador NotionEditor enhancements, Recoger API fix)
+**Updated By**: Claude (Velador meetings CRUD, reordering, navigation guard)
