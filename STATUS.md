@@ -31,10 +31,30 @@ Mode: act
 ```
 
 ### What's Happening
-- Velador Tasks page bug fixes completed
-- Responsive Kanban board with drag-and-drop
+- Velador Tasks page enhancements completed
+- Comment indicator with tooltip showing up to 3 latest comments
 
 ### Recent Progress (This Session - 2026-01-29)
+
+1. **Velador Tasks Drop Zone Styling** ✅
+   - Animated gradient overlay with dashed border
+   - Scale transform and shadow on hover
+   - Pulsing drop indicator with Plus icon and "Drop here" text
+
+2. **Velador Task Detail Modal Redesign** ✅
+   - Two-column layout: properties sidebar (264px) + content area
+   - Status, Priority, Due Date, Assignees in left sidebar
+   - Task Description and Comments on right side
+   - Renamed "Description" to "Task Description"
+
+3. **Velador Comment Indicator with Tooltip** ✅
+   - Added comment icon on task cards when comments exist
+   - Tooltip shows up to 3 latest comments on hover
+   - Backend returns `latest_comments` array (up to 3) instead of single comment
+   - Portal-based tooltip positioning to prevent clipping
+   - Shows "+X more comments" when there are additional comments
+
+### Previous Progress (This Session - 2026-01-29)
 
 1. **Velador Tasks Drag-and-Drop Fix** ✅
    - Changed columns from `useSortable` to `useDroppable` (proper drop targets)
@@ -45,7 +65,6 @@ Mode: act
    - Replaced flexbox with CSS grid layout
    - Grid: 1 column mobile, 2 columns sm (640px+), 4 columns xl (1280px+)
    - Adjusted min-heights for different viewport sizes
-   - Proper breakpoint handling for various screen sizes
 
 3. **Velador NotionEditor Slash Menu Fix** ✅
    - Used `createPortal` to render slash menu to document.body
@@ -75,18 +94,6 @@ Mode: act
 4. **Velador NotionEditor Enhancements** ✅
    - Implemented custom bubble menu (floating toolbar on text selection)
    - Redesigned slash menu to Notion-style
-
-### Previous Session (2026-01-27)
-
-1. **Recoger Onboarding System Frontend (Phase 2)** ✅
-   - Created TypeScript types, TanStack Query hooks, Zustand store
-   - Created ProgressRing, OnboardingBeacon, OnboardingPanel components
-   - Integrated into admin and user dashboard layouts
-
-2. **Recoger Onboarding System Frontend (Phase 3 - partial)** ✅
-   - Created step content components (SuccessMessage, InfoCards, etc.)
-   - Created StepContent dynamic renderer
-   - Created OnboardingErrorBoundary
 
 ### Open Threads
 - Set up redirect from recoger.app to recoger.co
@@ -128,6 +135,9 @@ _None_
    - [x] Responsive CSS grid layout ✅
    - [x] NotionEditor slash menu via portal ✅
    - [x] Modal enlarged, due date editable, priority capitalized ✅
+   - [x] Animated drop zone styling ✅
+   - [x] Two-column task detail modal layout ✅
+   - [x] Comment indicator with multi-comment tooltip ✅
 
 2. **Velador Meetings** (completed previously)
    - [x] Meeting items CRUD (agenda, homework, action items) ✅
@@ -165,13 +175,15 @@ _None_
 ## Files Modified This Session
 
 **Velador Web** (`komplyone-compliance-suite-monorepo/apps/velador-web`):
-- `src/pages/TasksPage.tsx` - CSS grid layout, useDroppable, pointerWithin collision, modal sizing, due date, priority capitalization
+- `src/pages/TasksPage.tsx` - Drop zone styling, two-column modal layout, CommentIndicator with portal tooltip
 - `src/components/NotionEditor.tsx` - createPortal for slash menu, fixed positioning
+- `src/lib/api.ts` - Changed LatestCommentPreview to CommentPreview, latest_comments array
 
 **Velador API** (`komplyone-compliance-suite-monorepo/apps/velador-api`):
-- `alembic/versions/20260129_0900-task_enhancements.py` - Migration for task enhancements
+- `app/schemas/task.py` - CommentPreview schema, latest_comments list field
+- `app/api/v1/endpoints/task.py` - Return up to 3 latest comments in task enrichment
 
 ---
 
 **Last Updated**: 2026-01-29
-**Updated By**: Claude (Velador Tasks bug fixes - DnD, responsive layout, NotionEditor)
+**Updated By**: Claude (Velador Tasks enhancements - drop zone, modal redesign, comment tooltip)
