@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | velador |
 | **Mode** | Act |
-| **Last Session** | 2026-01-28 |
+| **Last Session** | 2026-01-29 |
 
 ---
 
@@ -31,43 +31,50 @@ Mode: act
 ```
 
 ### What's Happening
-- Velador Meetings feature enhancements
-- Meeting items CRUD, reordering, unsaved changes guard
+- Velador Tasks page bug fixes completed
+- Responsive Kanban board with drag-and-drop
 
-### Recent Progress (This Session - 2026-01-28)
+### Recent Progress (This Session - 2026-01-29)
+
+1. **Velador Tasks Drag-and-Drop Fix** ✅
+   - Changed columns from `useSortable` to `useDroppable` (proper drop targets)
+   - Changed collision detection from `closestCorners` to `pointerWithin`
+   - Drag-and-drop now works correctly across all status columns
+
+2. **Velador Tasks Responsive Layout** ✅
+   - Replaced flexbox with CSS grid layout
+   - Grid: 1 column mobile, 2 columns sm (640px+), 4 columns xl (1280px+)
+   - Adjusted min-heights for different viewport sizes
+   - Proper breakpoint handling for various screen sizes
+
+3. **Velador NotionEditor Slash Menu Fix** ✅
+   - Used `createPortal` to render slash menu to document.body
+   - Fixed positioning to use viewport coordinates
+   - Slash menu no longer cut off by dialog overflow constraints
+
+4. **Velador Task Modal Improvements** ✅
+   - Enlarged edit modal to `max-w-6xl w-[95vw]`
+   - Added editable due date field with date picker
+   - Priority labels now properly capitalized
+
+### Previous Session (2026-01-28)
 
 1. **Velador Meeting Items CRUD** ✅
    - Added full CRUD operations for agenda, homework, and action items
    - Backend endpoints for create, update, delete on all item types
-   - Frontend forms and mutation hooks for all operations
    - Toggle completion status for all item types
 
 2. **Velador Item Reordering** ✅
-   - Added `sort_order` field to homework and action items (migration)
-   - Updated SQLAlchemy models with `order_by` relationships
+   - Added `sort_order` field to homework and action items
    - Implemented up/down arrow buttons with hover visibility
-   - Sequential sort_order assignment on reorder
 
 3. **Velador Navigation Guard** ✅
    - Created `NavigationGuardContext` for tracking unsaved changes
    - Show confirmation dialog when navigating with unsaved notes/summary
-   - Works for sidebar navigation, back link, and browser close
-   - Options: Save & Leave, Discard Changes, Cancel
 
-4. **Velador Meeting UX Improvements** ✅
-   - Tab persistence (stay on same tab after save)
-   - Cancel meeting dialog with confirmation
-   - Version indicator in sidebar (v1.0.2) for debugging
-
-### Previous Session (2026-01-28 - Earlier)
-
-1. **Velador NotionEditor Enhancements** ✅
+4. **Velador NotionEditor Enhancements** ✅
    - Implemented custom bubble menu (floating toolbar on text selection)
-   - Added all formatting options to bubble menu
    - Redesigned slash menu to Notion-style
-
-2. **Recoger API Fix** ✅
-   - Fixed syntax error in response interceptor
 
 ### Previous Session (2026-01-27)
 
@@ -116,7 +123,13 @@ _None_
 
 ## Next Steps
 
-1. **Velador Meetings** (current)
+1. **Velador Tasks** (completed this session)
+   - [x] Drag-and-drop working across all columns ✅
+   - [x] Responsive CSS grid layout ✅
+   - [x] NotionEditor slash menu via portal ✅
+   - [x] Modal enlarged, due date editable, priority capitalized ✅
+
+2. **Velador Meetings** (completed previously)
    - [x] Meeting items CRUD (agenda, homework, action items) ✅
    - [x] Item reordering (up/down arrows) ✅
    - [x] Unsaved changes navigation guard ✅
@@ -151,23 +164,14 @@ _None_
 
 ## Files Modified This Session
 
-**Velador API** (`komplyone-compliance-suite-monorepo/apps/velador-api`):
-- `app/api/v1/endpoints/meeting.py` - CRUD endpoints for items
-- `app/models/meeting.py` - sort_order field, order_by relationships
-- `app/schemas/meeting.py` - sort_order in schemas
-- `app/services/meeting_service.py` - CRUD service methods
-- `alembic/versions/20260128_2125-...` - sort_order migration
-
 **Velador Web** (`komplyone-compliance-suite-monorepo/apps/velador-web`):
-- `src/App.tsx` - NavigationGuardProvider wrapper
-- `src/components/AppShell.tsx` - Navigation guard dialog, version indicator
-- `src/contexts/NavigationGuardContext.tsx` - New context for unsaved changes
-- `src/hooks/useMeetings.ts` - CRUD mutation hooks for items
-- `src/lib/api.ts` - API methods for item CRUD
-- `src/pages/MeetingDetailPage.tsx` - Full rewrite with items, tabs, reordering
-- `src/pages/MeetingsPage.tsx` - Cancel meeting dialog
+- `src/pages/TasksPage.tsx` - CSS grid layout, useDroppable, pointerWithin collision, modal sizing, due date, priority capitalization
+- `src/components/NotionEditor.tsx` - createPortal for slash menu, fixed positioning
+
+**Velador API** (`komplyone-compliance-suite-monorepo/apps/velador-api`):
+- `alembic/versions/20260129_0900-task_enhancements.py` - Migration for task enhancements
 
 ---
 
-**Last Updated**: 2026-01-28
-**Updated By**: Claude (Velador meetings CRUD, reordering, navigation guard)
+**Last Updated**: 2026-01-29
+**Updated By**: Claude (Velador Tasks bug fixes - DnD, responsive layout, NotionEditor)
