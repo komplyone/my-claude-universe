@@ -4,10 +4,7 @@
 name: CI
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:  # Manual trigger only
 
 env:
   GO_VERSION: '1.22'

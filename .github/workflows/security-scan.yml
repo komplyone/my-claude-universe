@@ -4,15 +4,7 @@
 name: Security Scan
 
 on:
-  schedule:
-    - cron: '0 6 * * 1'  # Every Monday at 6 AM UTC
-  workflow_dispatch:
-  pull_request:
-    paths:
-      - '**/go.mod'
-      - '**/go.sum'
-      - '**/package.json'
-      - '**/package-lock.json'
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
   # ============================================
