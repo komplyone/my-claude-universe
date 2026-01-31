@@ -15,9 +15,9 @@
 | **MCU Version** | v1 |
 | **User** | Micke |
 | **MCU** | KomplyOne Universe |
-| **Current Focus** | velador |
+| **Current Focus** | recoger |
 | **Mode** | Act |
-| **Last Session** | 2026-01-29 |
+| **Last Session** | 2026-01-30 |
 
 ---
 
@@ -25,80 +25,60 @@
 
 ### Active Focus
 ```
-Project: velador
-Component: -
+Project: recoger
+Component: api-go
 Mode: act
 ```
 
 ### What's Happening
-- Velador Tasks page enhancements completed
-- Comment indicator with tooltip showing up to 3 latest comments
+- Recoger API connection pool debugging complete
+- Production cleanup done - debug logging removed
+- Simple deployment mode implemented (replaces blue/green)
 
-### Recent Progress (This Session - 2026-01-29)
+### Recent Progress (This Session - 2026-01-30)
 
-1. **Velador Tasks Drop Zone Styling** ✅
-   - Animated gradient overlay with dashed border
-   - Scale transform and shadow on hover
-   - Pulsing drop indicator with Plus icon and "Drop here" text
+1. **Connection Pool Debugging - Root Cause Found** ✅
+   - Issue: ~26 second delay on first requests after server restart
+   - Root cause: Blue/green deployment caused stale connections
+   - When two API instances ran simultaneously against Neon DB, connections became confused during switchover
+   - **NOT Neon cold start** - confirmed by manual testing without blue/green
 
-2. **Velador Task Detail Modal Redesign** ✅
-   - Two-column layout: properties sidebar (264px) + content area
-   - Status, Priority, Due Date, Assignees in left sidebar
-   - Task Description and Comments on right side
-   - Renamed "Description" to "Task Description"
+2. **Simple Deployment Mode Implemented** ✅
+   - New `./deploy-recoger.sh simple` command (recommended)
+   - Stop → Build → Start approach instead of blue/green overlap
+   - Added `api` service to docker-compose.prod.yml
+   - Blue/green commands marked as [legacy]
+   - ~10-30 seconds downtime vs connection issues
 
-3. **Velador Comment Indicator with Tooltip** ✅
-   - Added comment icon on task cards when comments exist
-   - Tooltip shows up to 3 latest comments on hover
-   - Backend returns `latest_comments` array (up to 3) instead of single comment
-   - Portal-based tooltip positioning to prevent clipping
-   - Shows "+X more comments" when there are additional comments
+3. **Connection Health Improvements** ✅
+   - `BeforeAcquire` ping validates connections before use (2s timeout)
+   - `HealthCheckPeriod` set to 30 seconds
+   - `AfterRelease` destroys closed connections
+   - `SimpleProtocol` for Neon (avoids extended query protocol hangs)
 
-### Previous Progress (This Session - 2026-01-29)
+4. **Production Cleanup** ✅
+   - Replaced `debug_wrapper.go` with `pool_wrapper.go` (keeps timeout enforcement)
+   - Removed all `fmt.Printf` debug statements
+   - Removed `LOGIN DIAGNOSTIC` and `DIAGNOSTIC` prefixes from auth logging
+   - Removed first-request timing middleware
+   - Simplified shutdown logging
+   - Both server and webhook-worker build successfully
 
-1. **Velador Tasks Drag-and-Drop Fix** ✅
-   - Changed columns from `useSortable` to `useDroppable` (proper drop targets)
-   - Changed collision detection from `closestCorners` to `pointerWithin`
-   - Drag-and-drop now works correctly across all status columns
+5. **Context Canceled Bug Fix** ✅
+   - `Query()` in debug wrapper was canceling context before row iteration
+   - Caused OAuth login failures ("context canceled" during GetActiveSessionsByUser)
+   - Fixed by not adding timeout for Query operations
 
-2. **Velador Tasks Responsive Layout** ✅
-   - Replaced flexbox with CSS grid layout
-   - Grid: 1 column mobile, 2 columns sm (640px+), 4 columns xl (1280px+)
-   - Adjusted min-heights for different viewport sizes
+### Key Files Changed
+- `docker-compose.prod.yml` - Added `api` service for simple mode
+- `scripts/deploy-recoger.sh` - Added `simple` command
+- `internal/infrastructure/database/postgres.go` - Health checks, SimpleProtocol
+- `internal/infrastructure/database/pool_wrapper.go` - Query timeout enforcement
+- `internal/app/app.go` - Removed debug middleware
+- `internal/api/v1/handler/auth_login.go` - Cleaned diagnostic logging
 
-3. **Velador NotionEditor Slash Menu Fix** ✅
-   - Used `createPortal` to render slash menu to document.body
-   - Fixed positioning to use viewport coordinates
-   - Slash menu no longer cut off by dialog overflow constraints
-
-4. **Velador Task Modal Improvements** ✅
-   - Enlarged edit modal to `max-w-6xl w-[95vw]`
-   - Added editable due date field with date picker
-   - Priority labels now properly capitalized
-
-### Previous Session (2026-01-28)
-
-1. **Velador Meeting Items CRUD** ✅
-   - Added full CRUD operations for agenda, homework, and action items
-   - Backend endpoints for create, update, delete on all item types
-   - Toggle completion status for all item types
-
-2. **Velador Item Reordering** ✅
-   - Added `sort_order` field to homework and action items
-   - Implemented up/down arrow buttons with hover visibility
-
-3. **Velador Navigation Guard** ✅
-   - Created `NavigationGuardContext` for tracking unsaved changes
-   - Show confirmation dialog when navigating with unsaved notes/summary
-
-4. **Velador NotionEditor Enhancements** ✅
-   - Implemented custom bubble menu (floating toolbar on text selection)
-   - Redesigned slash menu to Notion-style
-
-### Open Threads
-- Set up redirect from recoger.app to recoger.co
-- Reconnect GitHub to Cloudflare Pages for auto-deploy
-- Test push notifications on real device
+### Tags Created
+- `v1.0.0-working-simple-deploy` - Safe rollback point
 
 ---
 
@@ -108,11 +88,10 @@ Mode: act
 _None_
 
 ### Waiting On
-- User action: Reconnect GitHub to Cloudflare Pages for komplyone-web
-- User action: Set up Redirect Rules in recoger.app DNS zone
+- User action: Deploy with `./deploy-recoger.sh simple` to verify fix
 
 ### Blockers
-- Cloudflare Pages GitHub connection lost (workaround: deploy via Wrangler CLI)
+_None_
 
 ---
 
@@ -130,31 +109,17 @@ _None_
 
 ## Next Steps
 
-1. **Velador Tasks** (completed this session)
-   - [x] Drag-and-drop working across all columns ✅
-   - [x] Responsive CSS grid layout ✅
-   - [x] NotionEditor slash menu via portal ✅
-   - [x] Modal enlarged, due date editable, priority capitalized ✅
-   - [x] Animated drop zone styling ✅
-   - [x] Two-column task detail modal layout ✅
-   - [x] Comment indicator with multi-comment tooltip ✅
-
-2. **Velador Meetings** (completed previously)
-   - [x] Meeting items CRUD (agenda, homework, action items) ✅
-   - [x] Item reordering (up/down arrows) ✅
-   - [x] Unsaved changes navigation guard ✅
-   - [ ] Meeting templates (optional future enhancement)
+1. **Recoger Production Deploy** (ready)
+   - [x] Debug connection pool issue ✅
+   - [x] Implement simple deployment mode ✅
+   - [x] Clean up debug logging ✅
+   - [ ] Deploy to production: `./deploy-recoger.sh simple`
+   - [ ] Verify login/refresh works without delays
 
 2. **Recoger Onboarding Implementation** (paused)
-   - [x] Phase 1: Backend foundation ✅
-   - [x] Phase 2: Frontend foundation ✅
+   - [x] Phase 1-2: Backend & frontend foundation ✅
    - [~] Phase 3: Step content components ✅, animations pending
    - [ ] Phase 4: Accessibility, analytics, nudges
-   - **To complete Phase 3**: Run `npm install framer-motion canvas-confetti`
-
-3. **Recoger Domain Redirect** (pending)
-   - [ ] Remove custom domains from `recoger-website` Pages project
-   - [ ] Configure Redirect Rules: recoger.app -> recoger.co
 
 ---
 
@@ -174,16 +139,22 @@ _None_
 
 ## Files Modified This Session
 
-**Velador Web** (`komplyone-compliance-suite-monorepo/apps/velador-web`):
-- `src/pages/TasksPage.tsx` - Drop zone styling, two-column modal layout, CommentIndicator with portal tooltip
-- `src/components/NotionEditor.tsx` - createPortal for slash menu, fixed positioning
-- `src/lib/api.ts` - Changed LatestCommentPreview to CommentPreview, latest_comments array
+**Recoger API Go** (`komplyone-compliance-suite-monorepo/apps/recoger-api-go`):
+- `internal/infrastructure/database/postgres.go` - Connection health checks
+- `internal/infrastructure/database/pool_wrapper.go` - New (replaces debug_wrapper.go)
+- `internal/app/app.go` - Removed debug middleware
+- `internal/app/services.go` - Use PoolWrapper instead of DebugDBTX
+- `internal/app/repositories.go` - Removed debug logging
+- `internal/api/v1/handler/auth_login.go` - Cleaned diagnostic prefixes
+- `internal/domain/session/cached_repository.go` - Removed debug logging
+- `internal/infrastructure/cache/redis.go` - Removed ping timing
+- `cmd/server/main.go` - Simplified startup/shutdown
 
-**Velador API** (`komplyone-compliance-suite-monorepo/apps/velador-api`):
-- `app/schemas/task.py` - CommentPreview schema, latest_comments list field
-- `app/api/v1/endpoints/task.py` - Return up to 3 latest comments in task enrichment
+**Monorepo Root**:
+- `docker-compose.prod.yml` - Added simple mode `api` service
+- `scripts/deploy-recoger.sh` - Added `simple` command
 
 ---
 
-**Last Updated**: 2026-01-29
-**Updated By**: Claude (Velador Tasks enhancements - drop zone, modal redesign, comment tooltip)
+**Last Updated**: 2026-01-30
+**Updated By**: Claude (Connection pool debugging, simple deploy mode, production cleanup)

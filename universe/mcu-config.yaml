@@ -5,12 +5,12 @@
 mcu:
   # Your fork/clone of the public MCU repository
   public_repo:
-    url: ""  # e.g., "https://github.com/YOUR_USERNAME/my-claude-universe"
-    local_path: ""  # Optional: local clone path if different from this repo
+    url: "https://github.com/komplyone/my-claude-universe"
+    local_path: "/Users/micke/Documents/rnd/komplyone/my-claude-universe"
     branch: "main"
 
   # Set to true once you've configured the public repo
-  configured: false
+  configured: true
 
 # What to sync TO the public repo when using /update-mcu
 # These are MCU system files that benefit the community
