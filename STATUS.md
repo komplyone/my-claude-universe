@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | recoger |
 | **Mode** | Act |
-| **Last Session** | 2026-01-30 |
+| **Last Session** | 2026-02-03 |
 
 ---
 
@@ -26,59 +26,41 @@
 ### Active Focus
 ```
 Project: recoger
-Component: api-go
+Component: desktop
 Mode: act
 ```
 
 ### What's Happening
-- Recoger API connection pool debugging complete
-- Production cleanup done - debug logging removed
-- Simple deployment mode implemented (replaces blue/green)
+- Security hardening Phase 1 complete
+- Error events to UI implemented
+- Pre-audit report analyzed, Phase 2 plan created
 
-### Recent Progress (This Session - 2026-01-30)
+### Recent Progress (This Session - 2026-02-03)
 
-1. **Connection Pool Debugging - Root Cause Found** ✅
-   - Issue: ~26 second delay on first requests after server restart
-   - Root cause: Blue/green deployment caused stale connections
-   - When two API instances ran simultaneously against Neon DB, connections became confused during switchover
-   - **NOT Neon cold start** - confirmed by manual testing without blue/green
+1. **Error Events to UI** ✅
+   - New `events.rs` module with `BackendErrorPayload`
+   - Message poller and reporter emit errors to frontend
+   - Toast notification component with auto-dismiss
+   - Warning for retryable, error for non-retryable
 
-2. **Simple Deployment Mode Implemented** ✅
-   - New `./deploy-recoger.sh simple` command (recommended)
-   - Stop → Build → Start approach instead of blue/green overlap
-   - Added `api` service to docker-compose.prod.yml
-   - Blue/green commands marked as [legacy]
-   - ~10-30 seconds downtime vs connection issues
+2. **Pre-Audit Report Analysis** ✅
+   - Analyzed `recoger_desktop_pre_audit_report.md`
+   - Identified FALSE POSITIVE: .env not tracked in git
+   - Identified FIXED: Correlation IDs, error events
+   - Created Phase 2 hardening plan
 
-3. **Connection Health Improvements** ✅
-   - `BeforeAcquire` ping validates connections before use (2s timeout)
-   - `HealthCheckPeriod` set to 30 seconds
-   - `AfterRelease` destroys closed connections
-   - `SimpleProtocol` for Neon (avoids extended query protocol hangs)
-
-4. **Production Cleanup** ✅
-   - Replaced `debug_wrapper.go` with `pool_wrapper.go` (keeps timeout enforcement)
-   - Removed all `fmt.Printf` debug statements
-   - Removed `LOGIN DIAGNOSTIC` and `DIAGNOSTIC` prefixes from auth logging
-   - Removed first-request timing middleware
-   - Simplified shutdown logging
-   - Both server and webhook-worker build successfully
-
-5. **Context Canceled Bug Fix** ✅
-   - `Query()` in debug wrapper was canceling context before row iteration
-   - Caused OAuth login failures ("context canceled" during GetActiveSessionsByUser)
-   - Fixed by not adding timeout for Query operations
+3. **Security Hardening Status**
+   - **Phase 1 Complete**: Deep-link validation, logging redaction, HTTP timeouts, structured errors, correlation IDs, temp file cleanup, test coverage (75 tests)
+   - **Phase 2 Ready**: IPC surface hardening, reliability fixes, platform safety
 
 ### Key Files Changed
-- `docker-compose.prod.yml` - Added `api` service for simple mode
-- `scripts/deploy-recoger.sh` - Added `simple` command
-- `internal/infrastructure/database/postgres.go` - Health checks, SimpleProtocol
-- `internal/infrastructure/database/pool_wrapper.go` - Query timeout enforcement
-- `internal/app/app.go` - Removed debug middleware
-- `internal/api/v1/handler/auth_login.go` - Cleaned diagnostic logging
-
-### Tags Created
-- `v1.0.0-working-simple-deploy` - Safe rollback point
+- `apps/recoger-desktop/src-tauri/src/events.rs` - NEW: Error event types
+- `apps/recoger-desktop/src-tauri/src/service/messages.rs` - Error emission
+- `apps/recoger-desktop/src-tauri/src/service/reporter.rs` - Error emission
+- `apps/recoger-desktop/src/lib/toastStore.ts` - NEW: Toast state
+- `apps/recoger-desktop/src/components/Toast.tsx` - NEW: Toast UI
+- `apps/recoger-desktop/src/App.tsx` - backend-error listener
+- `apps/recoger-desktop/docs/security_hardening_phase2_plan.md` - NEW: Phase 2 plan
 
 ---
 
@@ -88,7 +70,7 @@ Mode: act
 _None_
 
 ### Waiting On
-- User action: Deploy with `./deploy-recoger.sh simple` to verify fix
+_None_
 
 ### Blockers
 _None_
@@ -109,12 +91,13 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Production Deploy** (ready)
-   - [x] Debug connection pool issue ✅
-   - [x] Implement simple deployment mode ✅
-   - [x] Clean up debug logging ✅
-   - [ ] Deploy to production: `./deploy-recoger.sh simple`
-   - [ ] Verify login/refresh works without delays
+1. **Recoger Desktop Security Phase 2** (ready)
+   - [ ] Remove token commands from IPC surface
+   - [ ] Disable withGlobalTauri
+   - [ ] Add UUID to temp DB paths
+   - [ ] Remove/constrain shell plugin
+   - [ ] Cap seen_message_ids
+   - [ ] Add Linux command timeouts
 
 2. **Recoger Onboarding Implementation** (paused)
    - [x] Phase 1-2: Backend & frontend foundation ✅
@@ -137,24 +120,5 @@ _None_
 
 ---
 
-## Files Modified This Session
-
-**Recoger API Go** (`komplyone-compliance-suite-monorepo/apps/recoger-api-go`):
-- `internal/infrastructure/database/postgres.go` - Connection health checks
-- `internal/infrastructure/database/pool_wrapper.go` - New (replaces debug_wrapper.go)
-- `internal/app/app.go` - Removed debug middleware
-- `internal/app/services.go` - Use PoolWrapper instead of DebugDBTX
-- `internal/app/repositories.go` - Removed debug logging
-- `internal/api/v1/handler/auth_login.go` - Cleaned diagnostic prefixes
-- `internal/domain/session/cached_repository.go` - Removed debug logging
-- `internal/infrastructure/cache/redis.go` - Removed ping timing
-- `cmd/server/main.go` - Simplified startup/shutdown
-
-**Monorepo Root**:
-- `docker-compose.prod.yml` - Added simple mode `api` service
-- `scripts/deploy-recoger.sh` - Added `simple` command
-
----
-
-**Last Updated**: 2026-01-30
-**Updated By**: Claude (Connection pool debugging, simple deploy mode, production cleanup)
+**Last Updated**: 2026-02-03
+**Updated By**: Claude (Error events to UI, security audit analysis, Phase 2 plan)
