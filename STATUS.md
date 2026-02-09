@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | recoger |
 | **Mode** | Act |
-| **Last Session** | 2026-02-03 |
+| **Last Session** | 2026-02-09 |
 
 ---
 
@@ -26,41 +26,46 @@
 ### Active Focus
 ```
 Project: recoger
-Component: desktop
+Component: web (dashboard)
 Mode: act
 ```
 
 ### What's Happening
-- Security hardening Phase 1 complete
-- Error events to UI implemented
-- Pre-audit report analyzed, Phase 2 plan created
+- Dashboard data now reflects real compliance status
+- Device distribution chart colors fixed
+- Build errors from sqlc type changes resolved
 
-### Recent Progress (This Session - 2026-02-03)
+### Recent Progress (This Session - 2026-02-09)
 
-1. **Error Events to UI** ✅
-   - New `events.rs` module with `BackendErrorPayload`
-   - Message poller and reporter emit errors to frontend
-   - Toast notification component with auto-dismiss
-   - Warning for retryable, error for non-retryable
+1. **Dashboard Compliance Fix** ✅
+   - Dashboard was showing "0 online" and "All compliant" incorrectly
+   - Root cause: queries used `devices.status` instead of computing from `security_data` JSON
+   - Added new SQL queries: `CountDevicesWithComplianceStatus`, `ListAtRiskDevicesWithIssues`
+   - Compliance computed from: filevault_enabled, firewall_enabled, screen_lock_enabled, os_up_to_date, antivirus_enabled
 
-2. **Pre-Audit Report Analysis** ✅
-   - Analyzed `recoger_desktop_pre_audit_report.md`
-   - Identified FALSE POSITIVE: .env not tracked in git
-   - Identified FIXED: Correlation IDs, error events
-   - Created Phase 2 hardening plan
+2. **Score Color Bug Fix** ✅
+   - Score badge was green at 80% even when device was non-compliant
+   - Changed color logic from percentage threshold to compliance status
+   - Fixed in: devices-page.tsx, device-components.tsx, device-detail-page.tsx
 
-3. **Security Hardening Status**
-   - **Phase 1 Complete**: Deep-link validation, logging redaction, HTTP timeouts, structured errors, correlation IDs, temp file cleanup, test coverage (75 tests)
-   - **Phase 2 Ready**: IPC surface hardening, reliability fixes, platform safety
+3. **Device Distribution Chart Fix** ✅
+   - Chart showed single color despite 50/50 Darwin/Windows split
+   - Root cause: `Color` field not being set in OS distribution data
+   - Added `getOSColor()` and `getStatusColor()` helper functions
+   - Distinct colors: Darwin=Indigo, Windows=Sky blue, Linux=Orange
+
+4. **Build Error Fix** ✅
+   - sqlc regeneration changed UUID types to strings (feature_requests uses VARCHAR(36))
+   - Fixed type mismatches in discovery.go and internal_feature_requests.go
+   - Changed pgtype.UUID to pgtype.Text for nullable fields
 
 ### Key Files Changed
-- `apps/recoger-desktop/src-tauri/src/events.rs` - NEW: Error event types
-- `apps/recoger-desktop/src-tauri/src/service/messages.rs` - Error emission
-- `apps/recoger-desktop/src-tauri/src/service/reporter.rs` - Error emission
-- `apps/recoger-desktop/src/lib/toastStore.ts` - NEW: Toast state
-- `apps/recoger-desktop/src/components/Toast.tsx` - NEW: Toast UI
-- `apps/recoger-desktop/src/App.tsx` - backend-error listener
-- `apps/recoger-desktop/docs/security_hardening_phase2_plan.md` - NEW: Phase 2 plan
+- `apps/recoger-api-go/sqlc/queries/device.sql` - New compliance queries
+- `apps/recoger-api-go/internal/app/repositories.go` - Compliance computation, chart colors
+- `apps/recoger-api-go/internal/api/v1/handler/discovery.go` - Type fixes
+- `apps/recoger-api-go/internal/api/v1/handler/internal_feature_requests.go` - Type fixes
+- `apps/recoger-web/src/features/admin/routes/devices-page.tsx` - Score color fix
+- `apps/recoger-web/src/features/admin/components/device-components.tsx` - Score color fix
 
 ---
 
@@ -91,7 +96,12 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Desktop Security Phase 2** (ready)
+1. **Recoger Dashboard** (in progress)
+   - [x] Fix compliance data computation
+   - [x] Fix device distribution chart colors
+   - [ ] Verify all dashboard widgets show real data
+
+2. **Recoger Desktop Security Phase 2** (ready)
    - [ ] Remove token commands from IPC surface
    - [ ] Disable withGlobalTauri
    - [ ] Add UUID to temp DB paths
@@ -99,10 +109,10 @@ _None_
    - [ ] Cap seen_message_ids
    - [ ] Add Linux command timeouts
 
-2. **Recoger Onboarding Implementation** (paused)
-   - [x] Phase 1-2: Backend & frontend foundation ✅
-   - [~] Phase 3: Step content components ✅, animations pending
-   - [ ] Phase 4: Accessibility, analytics, nudges
+3. **Enable Cross-Platform Builds** (ready)
+   - [ ] Uncomment macOS, Linux, Windows x86_64 in `build-desktop.yml`
+   - [ ] Verify GitHub secrets are configured for all platforms
+   - [ ] Push tag to trigger build, then run R2 upload workflow
 
 ---
 
@@ -120,5 +130,5 @@ _None_
 
 ---
 
-**Last Updated**: 2026-02-03
-**Updated By**: Claude (Error events to UI, security audit analysis, Phase 2 plan)
+**Last Updated**: 2026-02-09
+**Updated By**: Claude (Dashboard compliance fix, score color fix, chart colors, sqlc type fixes)
