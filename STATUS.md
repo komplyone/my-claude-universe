@@ -17,7 +17,7 @@
 | **MCU** | KomplyOne Universe |
 | **Current Focus** | recoger |
 | **Mode** | Act |
-| **Last Session** | 2026-02-09 |
+| **Last Session** | 2026-02-11 |
 
 ---
 
@@ -26,46 +26,39 @@
 ### Active Focus
 ```
 Project: recoger
-Component: web (dashboard)
+Component: desktop
 Mode: act
 ```
 
 ### What's Happening
-- Dashboard data now reflects real compliance status
-- Device distribution chart colors fixed
-- Build errors from sqlc type changes resolved
+- v1.4.21 released with logging and OAuth fixes
+- Testing on Windows ARM continues
+- Basic auth login issue still needs diagnosis (now possible with working debug logs)
 
-### Recent Progress (This Session - 2026-02-09)
+### Recent Progress (This Session - 2026-02-11)
 
-1. **Dashboard Compliance Fix** ✅
-   - Dashboard was showing "0 online" and "All compliant" incorrectly
-   - Root cause: queries used `devices.status` instead of computing from `security_data` JSON
-   - Added new SQL queries: `CountDevicesWithComplianceStatus`, `ListAtRiskDevicesWithIssues`
-   - Compliance computed from: filevault_enabled, firewall_enabled, screen_lock_enabled, os_up_to_date, antivirus_enabled
+1. **Fix Duplicate Logs** ✅
+   - Every log line appeared twice in log file
+   - Root cause: both LogDir and Stdout targets writing to same file
+   - Fix: Removed Stdout target from tauri_plugin_log config
+   - File: src-tauri/src/main.rs
 
-2. **Score Color Bug Fix** ✅
-   - Score badge was green at 80% even when device was non-compliant
-   - Changed color logic from percentage threshold to compliance status
-   - Fixed in: devices-page.tsx, device-components.tsx, device-detail-page.tsx
+2. **Fix Debug Level Not Working** ✅
+   - 5-tap debug toggle enabled but no debug messages appeared
+   - Root cause: Plugin internal filter hardcoded to Info, blocking Debug messages even after global filter raised
+   - Fix: Set plugin level to Trace (accept all), use log::set_max_level(Info) as runtime gate
+   - File: src-tauri/src/main.rs
 
-3. **Device Distribution Chart Fix** ✅
-   - Chart showed single color despite 50/50 Darwin/Windows split
-   - Root cause: `Color` field not being set in OS distribution data
-   - Added `getOSColor()` and `getStatusColor()` helper functions
-   - Distinct colors: Darwin=Indigo, Windows=Sky blue, Linux=Orange
+3. **Fix OAuth CSRF Error** ✅
+   - Google OAuth completed but deep link returned CSRF error
+   - Root cause: Frontend checked for `state` URL param, but backend sends tokens in `data` JSON blob (state already validated server-side)
+   - Fix: Skip client-side state check when `data` param present (server already validated)
+   - File: src/views/Login.tsx
 
-4. **Build Error Fix** ✅
-   - sqlc regeneration changed UUID types to strings (feature_requests uses VARCHAR(36))
-   - Fixed type mismatches in discovery.go and internal_feature_requests.go
-   - Changed pgtype.UUID to pgtype.Text for nullable fields
-
-### Key Files Changed
-- `apps/recoger-api-go/sqlc/queries/device.sql` - New compliance queries
-- `apps/recoger-api-go/internal/app/repositories.go` - Compliance computation, chart colors
-- `apps/recoger-api-go/internal/api/v1/handler/discovery.go` - Type fixes
-- `apps/recoger-api-go/internal/api/v1/handler/internal_feature_requests.go` - Type fixes
-- `apps/recoger-web/src/features/admin/routes/devices-page.tsx` - Score color fix
-- `apps/recoger-web/src/features/admin/components/device-components.tsx` - Score color fix
+4. **Downgrade Custom URL Warning** ✅
+   - "Custom API URL ignored" warning was noisy but harmless
+   - Fix: Changed log::warn! to log::debug!
+   - File: src-tauri/src/config.rs
 
 ---
 
@@ -96,12 +89,17 @@ _None_
 
 ## Next Steps
 
-1. **Recoger Dashboard** (in progress)
+1. **Recoger Desktop Login Diagnosis** (next)
+   - [ ] Test v1.4.21 on Windows ARM — verify debug logs now work
+   - [ ] Get debug logs from basic auth login attempt
+   - [ ] Diagnose and fix basic auth login failure
+
+2. **Recoger Dashboard** (in progress)
    - [x] Fix compliance data computation
    - [x] Fix device distribution chart colors
    - [ ] Verify all dashboard widgets show real data
 
-2. **Recoger Desktop Security Phase 2** (ready)
+3. **Recoger Desktop Security Phase 2** (ready)
    - [ ] Remove token commands from IPC surface
    - [ ] Disable withGlobalTauri
    - [ ] Add UUID to temp DB paths
@@ -109,8 +107,8 @@ _None_
    - [ ] Cap seen_message_ids
    - [ ] Add Linux command timeouts
 
-3. **Enable Cross-Platform Builds** (ready)
-   - [ ] Uncomment macOS, Linux, Windows x86_64 in `build-desktop.yml`
+4. **Enable Cross-Platform Builds** (ready)
+   - [ ] Uncomment macOS, Linux, Windows x86_64 in build-desktop.yml
    - [ ] Verify GitHub secrets are configured for all platforms
    - [ ] Push tag to trigger build, then run R2 upload workflow
 
@@ -130,5 +128,5 @@ _None_
 
 ---
 
-**Last Updated**: 2026-02-09
-**Updated By**: Claude (Dashboard compliance fix, score color fix, chart colors, sqlc type fixes)
+**Last Updated**: 2026-02-11
+**Updated By**: Claude (Recoger desktop v1.4.21 logging and OAuth fixes)
